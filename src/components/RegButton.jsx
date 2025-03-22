@@ -1,11 +1,9 @@
 import React from "react";
 
-export default function Button(props) {
-  const style = props.style;
-  const type = props.type;
+export default function Button({ style, type = "button", onClick, children }) {
   return (
-    <button className={style} type={type}>
-      {props.children}
+    <button className={style} type={type} onClick={onClick}>
+      {children}
     </button>
   );
 }

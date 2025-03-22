@@ -1,52 +1,51 @@
-const express = require("express"); //прописали експресс
-const app = express(); // задали значення нашого екземляру експресс обєкту-модели app
-const path = require("path");
-const port = 3001; // порт
-const mongoose = require("mongoose"); // скачав монгус
-let checking = 0;
-app.use(express.json()); // треба додати json в звичні файли
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors"); // Добавляємо CORS
+
+const app = express();
+const port = 3001;
+
+app.use(express.json());
+app.use(cors()); // Можна запроси з інших портів
 
 mongoose.connect("mongodb://127.0.0.1:27017/testing", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-const db = mongoose.connection; // підключення до бд
-
+const db = mongoose.connection;
 db.once("open", () => {
-  console.log("Connected to Mongo");
+  console.log("✅ Connected to MongoDB");
 });
 
 const userSchema = new mongoose.Schema({
-  // тут схема як наші дані будуть виглядати
   name: String,
-  age: Number,
   email: String,
+  password: String, // Добавив поле пароля
 });
 
-const User = mongoose.model(
-  "User",
-  userSchema
-); /* создает модель на основі схеми і причому в нижньому кейсі и у множественном числі*/
+const User = mongoose.model("User", userSchema);
 
 app.post("/users", async (req, res) => {
-  // тута ми робим пост, отправляем дані на наш юрл, а в реквесті дані шо відправив юзер
   try {
-    const newUser = new User(req.body); //робить нового юзера по модели схеми даних
-    await newUser.save(); // збереження юзера
-    res.status(201).send(newUser); // все добре відправили юзера
-    checking = 1;
-  } catch (error) {
-    res.status(400).send(error); // погано
-  }
-});
+    const { name, email, password } = req.body;
 
-app.get("/check", function (req, res) {
-  if (checking == true) {
-    res.send(console.log("Все добре"));
+    // Провіряємо чи нема користувачів з таким же емейл
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "❌ Email уже зарегистрирован" });
+    }
+
+    const newUser = new User({ name, email, password });
+    await newUser.save();
+    res
+      .status(201)
+      .json({ message: "✅ Пользователь зарегистрирован", user: newUser });
+  } catch (error) {
+    res.status(500).json({ message: "❌ Ошибка сервера", error });
   }
 });
 
 app.listen(port, () => {
-  console.log(`This server is currently working on this ${port}`); // Сервак слухає на порту
+  console.log(`🚀 Server is running on port ${port}`);
 });
