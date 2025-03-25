@@ -93,12 +93,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: start;
   height: 65%;
   width: 100%;
 }
 
 .input {
-  margin-top: 3%;
+  width: 80%;
+  margin-top: 2%;
   font-size: 20px;
   height: 50px;
   width: 70%;
@@ -164,6 +166,9 @@
 }
 
 .button {
+  text-align: center;
+  height: 40%;
+  width: 100%;
   margin-top: 3%;
   font-size: 20px;
   font-weight: bold;
@@ -186,4 +191,12 @@
 .button:active {
   transform: scale(0.98);
   box-shadow: 0 2px 6px rgba(106, 76, 243, 0.3);
+}
+
+.buttondiv {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  width: 40%;
+  height: 30%;
 }

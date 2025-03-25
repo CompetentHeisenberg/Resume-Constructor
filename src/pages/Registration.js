@@ -105,9 +105,11 @@ function Registration() {
             />
             {error && <div className={style.error}>{error}</div>}{" "}
             {/* Показ помилки буде тута */}
-            <Button style={style.button} type="submit">
-              Start Journey
-            </Button>
+            <div className={style.buttondiv}>
+              <Button style={style.button} type="submit">
+                Start Journey
+              </Button>
+            </div>
           </form>
         </div>
       </div>

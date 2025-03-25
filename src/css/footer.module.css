@@ -1,5 +1,28 @@
-.main {
+.footerBottom {
   height: 10%;
-  width: 100%;
-  background-color: black;
+  background-color: #1a252f;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.footerBottom p {
+  margin: 0;
+  color: #bdc3c7;
+  font-size: 14px;
+}
+
+.legalLinks {
+  margin-top: 10px;
+}
+
+.legalLinks a {
+  color: #bdc3c7;
+  margin: 0 10px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.legalLinks a:hover {
+  color: #3498db;
 }
