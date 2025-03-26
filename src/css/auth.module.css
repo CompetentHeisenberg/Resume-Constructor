@@ -1,0 +1,110 @@
+.base {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a1a;
+}
+
+.authMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 85%;
+  width: 95%;
+  background-image: url("C:\Users\kosov\Desktop\ResumeConstruct\resume-editor\public\news-background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  width: 450px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  padding: 40px;
+  color: white;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
+.input {
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #646cff;
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.button {
+  padding: 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: #161841;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #535bf2;
+}
+
+.footer {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.link {
+  color: #d5d6f1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.but {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -14,11 +14,19 @@ export default function Header(props) {
       </div>
       <div className={hstyle.center}></div>
       <div className={hstyle.right}>
-        <Link className={hstyle.link}>Makets</Link>
-        <Link className={hstyle.link}>Examples</Link>
+        <Link className={hstyle.link} to="/makets">
+          Makets
+        </Link>
+        <Link className={hstyle.link} to="/profile">
+          Profile
+        </Link>
         <div className={hstyle.center1}></div>
-        <Link className={hstyle.link1}>Registration</Link>
-        <Link className={hstyle.link1}>Autorisation</Link>
+        <Link className={hstyle.link1} to="/registration">
+          Registration
+        </Link>
+        <Link className={hstyle.link1} to="/auth">
+          Autorisation
+        </Link>
       </div>
     </header>
   );

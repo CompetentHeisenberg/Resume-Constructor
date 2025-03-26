@@ -1,15 +1,13 @@
 /*Основа*/
-.main-background {
+.mainBackground {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  margin: 0;
+  height: 100vh;
   background-color: rgb(180, 180, 180);
 }
 
 .background {
-  margin-top: 2.5%;
   display: flex;
   width: 95vw;
   height: 90vh;
@@ -119,7 +117,7 @@
 }
 
 .input:focus {
-  border-color: #272727;
+  border-color: #091c86;
   box-shadow: 0 0 10px rgba(3, 3, 3, 0.6);
 }
 
