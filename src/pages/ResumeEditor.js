@@ -40,8 +40,8 @@ const ResumeEditor = () => {
     if (!text) return "";
     return text
       .replace(/\n/g, "<br>")
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // **текст** -> жирний
-      .replace(/\*(.*?)\*/g, "<em>$1</em>"); // *текст* -> курсив
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // **text** -> bold
+      .replace(/\*(.*?)\*/g, "<em>$1</em>"); // *text* -> cursive
   };
 
   useEffect(() => {
@@ -75,29 +75,29 @@ const ResumeEditor = () => {
   return (
     <div className={styles.container}>
       <div className={styles.form}>
-        <h2 className={styles.title}>Редагування резюме</h2>
+        <h2 className={styles.title}>Editing Resume</h2>
 
         <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Основна інформація</h3>
+          <h3 className={styles.sectionTitle}>Main Information</h3>
           <div className={styles.inputGroup}>
-            <label>Повне ім'я</label>
+            <label>Full Name</label>
             <input
               name="fullName"
               value={rawData.fullName}
               onChange={handleInputChange}
               className={styles.input}
-              placeholder="Наприклад: Іван Іванов"
+              placeholder="Example: John Smith"
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Позиція</label>
+            <label>Position</label>
             <input
               name="position"
               value={rawData.position}
               onChange={handleInputChange}
               className={styles.input}
-              placeholder="Наприклад: Frontend Developer"
+              placeholder="Example: Frontend Developer"
             />
           </div>
 
@@ -113,87 +113,86 @@ const ResumeEditor = () => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Телефон</label>
+            <label>Phone</label>
             <input
               name="phone"
               value={rawData.phone}
               onChange={handleInputChange}
               className={styles.input}
-              placeholder="+380 XX XXX XX XX"
+              placeholder="+XXX XX XXX XX XX"
             />
           </div>
         </div>
 
         <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Професійна інформація</h3>
+          <h3 className={styles.sectionTitle}>Professional Information</h3>
 
           <div className={styles.inputGroup}>
-            <label>Досвід роботи</label>
+            <label>Years of Expirience</label>
             <textarea
               name="experience"
               value={rawData.experience}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder={`Приклад:\nКомпанія "TechSolutions" (2020-2023)\nFrontend Developer\n- Розробка SPA додатків\n- Оптимізація продуктивності`}
+              placeholder={`Example:\nCompany "TechSolutions" (2020-2023)\nFrontend Developer\n- Developing SPA app's\n- Productivity Optimisation`}
               rows={6}
             />
             <div className={styles.hint}>
-              Використовуйте Enter для нового рядка. Для жирного тексту:
-              **слово**
+              Use Enter for a new line. For bold text: **text**
             </div>
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Освіта</label>
+            <label>Education</label>
             <textarea
               name="education"
               value={rawData.education}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder={`Приклад:\nКиївський університет (2015-2019)\nБакалавр комп'ютерних наук`}
+              placeholder={`Example:\nKyiv University (2015-2019)\nBachelor of Computer Science`}
               rows={4}
             />
           </div>
         </div>
 
         <div className={styles.formSection}>
-          <h3 className={styles.sectionTitle}>Додаткова інформація</h3>
+          <h3 className={styles.sectionTitle}>Additional Information</h3>
 
           <div className={styles.inputGroup}>
-            <label>Проекти</label>
+            <label>Projects</label>
             <textarea
               name="projects"
               value={rawData.projects}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder={`Приклад:\nІнтернет-магазин (React/Node.js)\n- Розробка UI компонентів\n- Інтеграція з API`}
+              placeholder={`Example:\nWeb-Store (React/Node.js)\n- Developing UI components\n- Integration with API`}
               rows={5}
             />
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Навички</label>
+            <label>Skills</label>
             <textarea
               name="skills"
               value={rawData.skills}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder="Наприклад: JavaScript, React, HTML/CSS, Git"
+              placeholder="Example: JavaScript, React, HTML/CSS, Git"
               rows={3}
             />
             <div className={styles.hint}>
-              Розділяйте комами для створення списку
+              Separate with commas to create a list
             </div>
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Мови</label>
+            <label>Languages</label>
             <textarea
               name="languages"
               value={rawData.languages}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder="Наприклад: Українська (рідна), Англійська (B2)"
+              placeholder="Example: Ukrainian (native), English (B2)"
               rows={2}
             />
           </div>

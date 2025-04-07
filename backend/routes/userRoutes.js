@@ -1,26 +1,52 @@
 const express = require("express");
+const router = express.Router();
 const User = require("../models/User");
 
-const router = express.Router();
-
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { email, password, fullName } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "❌ Email уже зарегестрований" });
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        error: "Email and password are required",
+      });
     }
 
-    const newUser = new User({ name, email, password });
-    await newUser.save();
+    const existingUser = await User.findOne({
+      email: email.trim().toLowerCase(),
+    });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        error: "User already exists",
+      });
+    }
+
+    const user = new User({
+      email: email.trim().toLowerCase(),
+      password,
+      fullName: fullName?.trim() || "",
+    });
+
+    const token = await user.generateAuthToken();
+    await user.save();
 
     res.status(201).json({
-      message: "✅ Пользователь зареєстрований",
-      user: newUser,
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        fullName: user.fullName,
+      },
     });
   } catch (error) {
-    res.status(500).json({ message: "❌ Помилка сервера", error });
+    console.error("Registration error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
   }
 });
 

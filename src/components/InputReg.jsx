@@ -1,21 +1,27 @@
 import React from "react";
 
-export default function InputReg({
-  help,
+const InputReg = ({
   style,
   type = "text",
   name,
-  value,
+  value = "",
   onChange,
-}) {
+  help,
+  required = false,
+  ...props
+}) => {
   return (
     <input
       className={style}
-      type={type}
       placeholder={help}
+      type={type}
       name={name}
       value={value}
       onChange={onChange}
+      required={required}
+      {...props}
     />
   );
-}
+};
+
+export default InputReg;

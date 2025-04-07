@@ -1,0 +1,114 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.templateWrapper {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.previewSection {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.previewContent {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.demoHeader {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  padding: 1.5rem;
+  margin: -2rem -2rem 1.5rem -2rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.demoName {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.demoPosition {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.demoContact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.demoContactItem {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.demoIcon {
+  margin-right: 0.5rem;
+}
+
+.demoSection {
+  margin-bottom: 1.5rem;
+}
+
+.demoSectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.demoList {
+  padding-left: 1.5rem;
+}
+
+.demoListItem {
+  margin-bottom: 0.5rem;
+}
+
+.actionsSection {
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.useButton {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.useButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #64748b;
+}

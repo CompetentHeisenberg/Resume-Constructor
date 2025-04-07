@@ -25,11 +25,13 @@ const ResumePreview = ({ data, template }) => {
       const result = html
         .replace(
           /\{\{fullName\}\}/g,
-          data.fullName || "<span style='color:#999'>Ім'я не вказано</span>"
+          data.fullName ||
+            "<span style='color:#999'>Full Name not specified</span>"
         )
         .replace(
           /\{\{position\}\}/g,
-          data.position || "<span style='color:#999'>Позиція не вказана</span>"
+          data.position ||
+            "<span style='color:#999'>Position not specified</span>"
         )
         .replace(
           /\{\{email\}\}/g,
@@ -37,32 +39,32 @@ const ResumePreview = ({ data, template }) => {
         )
         .replace(
           /\{\{phone\}\}/g,
-          data.phone || "<span style='color:#999'>+380 XX XXX XX XX</span>"
+          data.phone || "<span style='color:#999'>+XXX XX XXX XX XX</span>"
         )
         .replace(
           /\{\{experience\}\}/g,
           formatContent(data.experience) ||
-            "<span style='color:#999'>Досвід роботи не вказано</span>"
+            "<span style='color:#999'>Years of Expirience not specified</span>"
         )
         .replace(
           /\{\{education\}\}/g,
           formatContent(data.education) ||
-            "<span style='color:#999'>Освіта не вказана</span>"
+            "<span style='color:#999'>Education not specified</span>"
         )
         .replace(
           /\{\{projects\}\}/g,
           formatContent(data.projects) ||
-            "<span style='color:#999'>Проекти не вказано</span>"
+            "<span style='color:#999'>Projects not specified</span>"
         )
         .replace(
           /\{\{skills\}\}/g,
           formatContent(data.skills) ||
-            "<span style='color:#999'>Навички не вказано</span>"
+            "<span style='color:#999'>Skills not specified</span>"
         )
         .replace(
           /\{\{languages\}\}/g,
           formatContent(data.languages) ||
-            "<span style='color:#999'>Мови не вказано</span>"
+            "<span style='color:#999'>Languages not specified</span>"
         );
 
       return DOMPurify.sanitize(result);
@@ -81,27 +83,27 @@ const ResumePreview = ({ data, template }) => {
           </header>
 
           <section style="margin-bottom: 25px;">
-            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Досвід роботи</h2>
+            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Years of expirience</h2>
             <div style="margin-top: 10px; line-height: 1.6;">{{experience}}</div>
           </section>
 
           <section style="margin-bottom: 25px;">
-            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Освіта</h2>
+            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Education</h2>
             <div style="margin-top: 10px; line-height: 1.6;">{{education}}</div>
           </section>
 
           <section style="margin-bottom: 25px;">
-            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Проекти</h2>
+            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Projects</h2>
             <div style="margin-top: 10px; line-height: 1.6;">{{projects}}</div>
           </section>
 
           <section style="margin-bottom: 25px;">
-            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Навички</h2>
+            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Skills</h2>
             <div style="margin-top: 10px;">{{skills}}</div>
           </section>
 
           <section>
-            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Мови</h2>
+            <h2 style="color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 20px;">Languages</h2>
             <div style="margin-top: 10px;">{{languages}}</div>
           </section>
         </div>
@@ -163,7 +165,7 @@ const ResumePreview = ({ data, template }) => {
             margin: 0,
           }}
         >
-          Попередній перегляд
+          Preview of Template
         </h2>
         <button
           onClick={downloadPDF}
@@ -181,7 +183,7 @@ const ResumePreview = ({ data, template }) => {
             },
           }}
         >
-          Завантажити PDF
+          Dowloand PDF
         </button>
       </div>
 

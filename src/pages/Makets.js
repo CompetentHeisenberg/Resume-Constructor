@@ -1,15 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styles from "../css/makets.module.css";
+
+// Демо-дані для відображення в прев'ю шаблонов
+const DEMO_DATA = {
+  fullName: "Anna Kovalenko",
+  position: "Frontend Developer",
+  email: "anna@example.com",
+  phone: "+380 99 123 4567",
+  experience: `
+    <div>
+      <p><strong>Senior Frontend Developer</strong></p>
+      <p>TechSolutions Inc. | 2020-now</p>
+      <ul>
+        <li>Developing SPA on React</li>
+        <li>Productivity Optimisation</li>
+      </ul>
+    </div>
+  `,
+  education: `
+    <div>
+      <p><strong>Computer Science</strong></p>
+      <p>Kyiv University | 2015-2019</p>
+    </div>
+  `,
+  projects: `
+    <ul>
+      <li>Web-Store (React/Node.js)</li>
+      <li>Corporate Portal (Vue.js)</li>
+    </ul>
+  `,
+  skills: "JavaScript, React, HTML/CSS, Git",
+  languages: "Ukrainian (native), English (B2)",
+};
 
 function Makets() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3001/templates")
       .then((response) => {
-        if (!response.ok) throw new Error("Помилка завантаження");
+        if (!response.ok) throw new Error("Error while dowloanding templates");
         return response.json();
       })
       .then((data) => {
@@ -22,44 +56,100 @@ function Makets() {
       });
   }, []);
 
-  if (loading) return <div className="text-center py-8">Завантаження...</div>;
-  if (error)
-    return <div className="text-red-500 text-center py-8">{error}</div>;
+  // Функція для заміни плейсхолдерів на демо-дані
+  const renderDemoContent = (htmlContent) => {
+    if (!htmlContent) return "";
+
+    return htmlContent
+      .replace(/\{\{fullName\}\}/g, DEMO_DATA.fullName)
+      .replace(/\{\{position\}\}/g, DEMO_DATA.position)
+      .replace(/\{\{email\}\}/g, DEMO_DATA.email)
+      .replace(/\{\{phone\}\}/g, DEMO_DATA.phone)
+      .replace(/\{\{experience\}\}/g, DEMO_DATA.experience)
+      .replace(/\{\{education\}\}/g, DEMO_DATA.education)
+      .replace(/\{\{projects\}\}/g, DEMO_DATA.projects)
+      .replace(/\{\{skills\}\}/g, DEMO_DATA.skills)
+      .replace(/\{\{languages\}\}/g, DEMO_DATA.languages);
+  };
+
+  const filteredTemplates = templates.filter((template) =>
+    template.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <div className={styles.spinner} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.error}>
+        <p className={styles.errorTitle}>Error</p>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Шаблони резюме</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {templates.map((template) => (
-          <div
-            key={template._id}
-            className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
-          >
-            <div
-              className="bg-white p-4 h-64 overflow-y-auto"
-              dangerouslySetInnerHTML={{ __html: template.htmlContent }}
-            />
-            <div className="bg-gray-50 p-4 border-t">
-              <h3 className="text-xl font-semibold">{template.name}</h3>
-              <div className="mt-4 flex justify-between items-center">
-                <Link
-                  to={`/templates/${template._id}`}
-                  className="text-blue-500 hover:underline"
-                >
-                  Детальніше
-                </Link>
-                <Link
-                  to="/editor"
-                  state={{ selectedTemplate: template }}
-                  className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                  Використати
-                </Link>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Professional Templates</h1>
+        <p className={styles.subtitle}>Choose ideal Template for yourself</p>
+
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Searching Templates..."
+            className={styles.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </header>
+
+      {filteredTemplates.length > 0 ? (
+        <div className={styles.templatesGrid}>
+          {filteredTemplates.map((template) => (
+            <div key={template._id} className={styles.templateCard}>
+              <div className={styles.previewContainer}>
+                <div
+                  className={styles.demoContent}
+                  dangerouslySetInnerHTML={{
+                    __html: renderDemoContent(template.htmlContent),
+                  }}
+                />
+              </div>
+              <div className={styles.cardContent}>
+                <h3 className={styles.templateName}>{template.name}</h3>
+                <div className={styles.actions}>
+                  <Link
+                    to={`/templates/${template._id}`}
+                    className={styles.detailLink}
+                  >
+                    Details
+                  </Link>
+                  <Link
+                    to="/editor"
+                    state={{ selectedTemplate: template }}
+                    className={styles.useButton}
+                  >
+                    Use this Template
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>📄</div>
+          <h3>We dont find any Templates</h3>
+          <p>Try to change search parameters</p>
+        </div>
+      )}
     </div>
   );
 }
