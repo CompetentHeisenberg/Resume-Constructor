@@ -24,30 +24,40 @@ function Registration() {
     setError(null);
     setLoading(true);
 
-    try {
-      const response = await fetch("http://localhost:3001/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: formData.fullName.trim(),
-          email: formData.email.trim().toLowerCase(),
-          password: formData.password,
-        }),
-      });
+    if (
+      formData.password.length > 7 &&
+      /[A-Z]/.test(formData.password) &&
+      /[a-z]/.test(formData.password) &&
+      /\d/.test(formData.password)
+    ) {
+      try {
+        const response = await fetch("http://localhost:3001/users/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullName: formData.fullName.trim(),
+            email: formData.email.trim().toLowerCase(),
+            password: formData.password,
+          }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || "Registration failed");
+        if (!response.ok) {
+          throw new Error(data.error || "Registration failed");
+        }
+
+        // Сохраняємо токен и перенаправляємо
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/");
+      } catch (error) {
+        setError(error.message || "Registration error");
+      } finally {
+        setLoading(false);
       }
-
-      // Сохраняємо токен и перенаправляємо
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/");
-    } catch (error) {
-      setError(error.message || "Registration error");
-    } finally {
+    } else {
+      setError("You must match password requirements");
       setLoading(false);
     }
   };

@@ -8,36 +8,29 @@ const DEMO_DATA = {
   email: "olexandr@example.com",
   phone: "+380 99 765 4321",
   experience: `
-    <div class="${styles.demoSection}">
-      <div>
-        <p><strong>Senior Frontend Developer</strong></p>
-        <p>Tech Innovations | 2018-now</p>
-        <ul class="${styles.demoList}">
-          <li class="${styles.demoListItem}">Developing web-architecture on React</li>
-          <li class="${styles.demoListItem}">Team-Lead in developer team</li>
-        </ul>
-      </div>
-    </div>
-  `,
-  education: `
-    <div class="${styles.demoSection}">
-      <div>
-        <p><strong>Master of CS</strong></p>
-        <p>Kyiv Politech Institute | 2012-2018</p>
-      </div>
-    </div>
-  `,
-  projects: `
-    <div class="${styles.demoSection}">
-      <h3 class="${styles.demoSectionTitle}">Projects</h3>
-      <ul class="${styles.demoList}">
-        <li class="${styles.demoListItem}">Analytic System Manager (React/Node.js)</li>
-        <li class="${styles.demoListItem}">Web Banking Service (React Native)</li>
+    <div>
+      <p><strong>Senior Frontend Developer</strong></p>
+      <p>Tech Innovations | 2018-now</p>
+      <ul>
+        <li>Developing web-architecture on React</li>
+        <li>Team-Lead in developer team</li>
       </ul>
     </div>
   `,
+  education: `
+    <div>
+      <p><strong>Master of CS</strong></p>
+      <p>Kyiv Politech Institute | 2012-2018</p>
+    </div>
+  `,
+  projects: `
+    <ul>
+      <li>Analytic System Manager (React/Node.js)</li>
+      <li>Web Banking Service (React Native)</li>
+    </ul>
+  `,
   skills: "JavaScript, React, TypeScript, Redux, GraphQL",
-  languages: "Ukarinian (native), English (C1)",
+  languages: "Ukrainian (native), English (C1)",
 };
 
 function TemplateDetail() {
@@ -49,7 +42,7 @@ function TemplateDetail() {
   useEffect(() => {
     fetch(`http://localhost:3001/templates/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Cannot dowloand Template");
+        if (!res.ok) throw new Error("Cannot download Template");
         return res.json();
       })
       .then((data) => {
@@ -57,15 +50,13 @@ function TemplateDetail() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Помилка:", error);
+        console.error("Error:", error);
         setLoading(false);
       });
   }, [id]);
 
-  // Функція для заміни плейсхолдерів на демо-дані
   const renderDemoContent = (htmlContent) => {
     if (!htmlContent) return "";
-
     return htmlContent
       .replace(/\{\{fullName\}\}/g, DEMO_DATA.fullName)
       .replace(/\{\{position\}\}/g, DEMO_DATA.position)
@@ -99,21 +90,18 @@ function TemplateDetail() {
     });
   };
 
-  if (loading) {
+  if (loading)
     return (
       <div className={styles.loading}>
-        <p>Dowloanding Template...</p>
+        <p>Loading Template...</p>
       </div>
     );
-  }
-
-  if (!template) {
+  if (!template)
     return (
       <div className={styles.loading}>
-        <p>Cannot dowloand Template</p>
+        <p>Cannot load Template</p>
       </div>
     );
-  }
 
   return (
     <div className={styles.container}>
@@ -126,7 +114,6 @@ function TemplateDetail() {
             }}
           />
         </div>
-
         <div className={styles.actionsSection}>
           <button onClick={handleUseTemplate} className={styles.useButton}>
             Use this Template

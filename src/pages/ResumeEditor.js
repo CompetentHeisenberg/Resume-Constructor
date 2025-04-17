@@ -5,7 +5,7 @@ import styles from "../css/resumeEditor.module.css";
 
 const ResumeEditor = () => {
   const { state } = useLocation();
-  const [formData, setFormData] = useState({
+  const initialData = {
     fullName: "",
     email: "",
     phone: "",
@@ -15,19 +15,17 @@ const ResumeEditor = () => {
     projects: "",
     languages: "",
     skills: "",
-  });
+  };
 
-  const [rawData, setRawData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    position: "",
-    experience: "",
-    education: "",
-    projects: "",
-    languages: "",
-    skills: "",
-  });
+  const [rawData, setRawData] = useState(initialData);
+
+  const convertTextToHtml = (text) => {
+    if (!text) return "";
+    return text
+      .replace(/\n/g, "<br>")
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>");
+  };
 
   const convertHtmlToText = (html) => {
     if (!html) return "";
@@ -36,23 +34,14 @@ const ResumeEditor = () => {
     return temp.textContent || temp.innerText || "";
   };
 
-  const convertTextToHtml = (text) => {
-    if (!text) return "";
-    return text
-      .replace(/\n/g, "<br>")
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // **text** -> bold
-      .replace(/\*(.*?)\*/g, "<em>$1</em>"); // *text* -> cursive
-  };
-
   useEffect(() => {
     if (state?.selectedTemplate?.defaultValues) {
       const templateData = state.selectedTemplate.defaultValues;
-      setFormData(templateData);
-
       const plainTextData = {};
-      Object.keys(templateData).forEach((key) => {
+
+      for (const key in templateData) {
         plainTextData[key] = convertHtmlToText(templateData[key]);
-      });
+      }
 
       setRawData(plainTextData);
     }
@@ -60,85 +49,61 @@ const ResumeEditor = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     setRawData((prev) => ({
       ...prev,
       [name]: value,
     }));
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: convertTextToHtml(value),
-    }));
   };
+
+  const handleDataImported = (importedData) => {
+    const plainTextData = {};
+    for (const key in importedData) {
+      plainTextData[key] = convertHtmlToText(importedData[key]);
+    }
+    setRawData(plainTextData);
+  };
+
+  const formData = {};
+  for (const key in rawData) {
+    formData[key] = convertTextToHtml(rawData[key]);
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.form}>
-        <h2 className={styles.title}>Editing Resume</h2>
-
+        <h2 className={styles.title}>Edit Resume</h2>
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Main Information</h3>
-          <div className={styles.inputGroup}>
-            <label>Full Name</label>
-            <input
-              name="fullName"
-              value={rawData.fullName}
-              onChange={handleInputChange}
-              className={styles.input}
-              placeholder="Example: John Smith"
-            />
-          </div>
 
-          <div className={styles.inputGroup}>
-            <label>Position</label>
-            <input
-              name="position"
-              value={rawData.position}
-              onChange={handleInputChange}
-              className={styles.input}
-              placeholder="Example: Frontend Developer"
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Email</label>
-            <input
-              name="email"
-              value={rawData.email}
-              onChange={handleInputChange}
-              className={styles.input}
-              placeholder="your@email.com"
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Phone</label>
-            <input
-              name="phone"
-              value={rawData.phone}
-              onChange={handleInputChange}
-              className={styles.input}
-              placeholder="+XXX XX XXX XX XX"
-            />
-          </div>
+          {["fullName", "position", "email", "phone"].map((field) => (
+            <div className={styles.inputGroup} key={field}>
+              <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+              <input
+                name={field}
+                value={rawData[field]}
+                onChange={handleInputChange}
+                className={styles.input}
+                placeholder={field === "email" ? "your@email.com" : ""}
+              />
+            </div>
+          ))}
         </div>
 
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Professional Information</h3>
 
           <div className={styles.inputGroup}>
-            <label>Years of Expirience</label>
+            <label>Work Experience</label>
             <textarea
               name="experience"
               value={rawData.experience}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder={`Example:\nCompany "TechSolutions" (2020-2023)\nFrontend Developer\n- Developing SPA app's\n- Productivity Optimisation`}
               rows={6}
+              placeholder="Example:\nCompany (2020-2023)..."
             />
             <div className={styles.hint}>
-              Use Enter for a new line. For bold text: **text**
+              Use Enter for new line. For bold: **text**, for italic: *text*
             </div>
           </div>
 
@@ -149,7 +114,6 @@ const ResumeEditor = () => {
               value={rawData.education}
               onChange={handleInputChange}
               className={styles.textarea}
-              placeholder={`Example:\nKyiv University (2015-2019)\nBachelor of Computer Science`}
               rows={4}
             />
           </div>
@@ -158,48 +122,31 @@ const ResumeEditor = () => {
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Additional Information</h3>
 
-          <div className={styles.inputGroup}>
-            <label>Projects</label>
-            <textarea
-              name="projects"
-              value={rawData.projects}
-              onChange={handleInputChange}
-              className={styles.textarea}
-              placeholder={`Example:\nWeb-Store (React/Node.js)\n- Developing UI components\n- Integration with API`}
-              rows={5}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Skills</label>
-            <textarea
-              name="skills"
-              value={rawData.skills}
-              onChange={handleInputChange}
-              className={styles.textarea}
-              placeholder="Example: JavaScript, React, HTML/CSS, Git"
-              rows={3}
-            />
-            <div className={styles.hint}>
-              Separate with commas to create a list
+          {["projects", "skills", "languages"].map((field) => (
+            <div className={styles.inputGroup} key={field}>
+              <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+              <textarea
+                name={field}
+                value={rawData[field]}
+                onChange={handleInputChange}
+                className={styles.textarea}
+                rows={field === "projects" ? 5 : 2}
+              />
+              {field === "skills" && (
+                <div className={styles.hint}>
+                  Separate with commas to create a bullet list
+                </div>
+              )}
             </div>
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Languages</label>
-            <textarea
-              name="languages"
-              value={rawData.languages}
-              onChange={handleInputChange}
-              className={styles.textarea}
-              placeholder="Example: Ukrainian (native), English (B2)"
-              rows={2}
-            />
-          </div>
+          ))}
         </div>
       </div>
 
-      <ResumePreview data={formData} template={state?.selectedTemplate || {}} />
+      <ResumePreview
+        data={formData}
+        template={state?.selectedTemplate || {}}
+        onDataImported={handleDataImported}
+      />
     </div>
   );
 };

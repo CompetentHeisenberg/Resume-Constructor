@@ -8,7 +8,17 @@ const templateSchema = new mongoose.Schema(
     thumbnail: String,
     placeholders: {
       type: [String],
-      default: ["fullName", "email", "phone", "experience", "education"],
+      default: [
+        "fullName",
+        "email",
+        "phone",
+        "position",
+        "experience",
+        "education",
+        "projects",
+        "languages",
+        "skills",
+      ],
     },
   },
   { timestamps: true }

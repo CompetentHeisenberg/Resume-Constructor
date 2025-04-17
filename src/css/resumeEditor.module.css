@@ -30,7 +30,14 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
+  color: black;
+  background-color: white;
   transition: 0.3s;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #999;
 }
 
 .input:focus,
