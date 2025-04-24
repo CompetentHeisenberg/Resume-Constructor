@@ -104,20 +104,22 @@ function TemplateDetail() {
     );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.templateWrapper}>
-        <div className={styles.previewSection}>
-          <div
-            className={styles.previewContent}
-            dangerouslySetInnerHTML={{
-              __html: renderDemoContent(template.htmlContent),
-            }}
-          />
-        </div>
-        <div className={styles.actionsSection}>
-          <button onClick={handleUseTemplate} className={styles.useButton}>
-            Use this Template
-          </button>
+    <div className={styles.templatePage}>
+      <div className={styles.container}>
+        <div className={styles.templateWrapper}>
+          <div className={styles.previewSection}>
+            <div
+              className={styles.previewContent}
+              dangerouslySetInnerHTML={{
+                __html: renderDemoContent(template.htmlContent),
+              }}
+            />
+          </div>
+          <div className={styles.actionsSection}>
+            <button onClick={handleUseTemplate} className={styles.useButton}>
+              Use this Template
+            </button>
+          </div>
         </div>
       </div>
     </div>

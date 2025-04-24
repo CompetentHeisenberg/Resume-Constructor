@@ -6,7 +6,10 @@ import headerstyle from "../css/header.module.css";
 import footerstyle from "../css/footer.module.css";
 import Label from "../components/Label";
 import Button from "../components/RegButton";
+import { useNavigate } from "react-router-dom";
+
 function Mpage() {
+  const navigate = useNavigate();
   return (
     <div className={style.mainpage}>
       <Header style={headerstyle.main}></Header>
@@ -22,7 +25,9 @@ function Mpage() {
             style={style.labeldesc1}
             text={"Lets build you a resume that works."}
           ></Label>
-          <Button style={style.button}>Create my Resume</Button>
+          <Button style={style.button} onClick={() => navigate("/makets")}>
+            Create my Resume
+          </Button>
         </div>
         <div className={style.rightmain}>
           <img src="/resume-main.jpg" alt="Resume Example"></img>

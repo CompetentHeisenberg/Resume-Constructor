@@ -74,11 +74,13 @@ const ResumeEditor = () => {
         <h2 className={styles.title}>Edit Resume</h2>
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Main Information</h3>
-
           {["fullName", "position", "email", "phone"].map((field) => (
             <div className={styles.inputGroup} key={field}>
-              <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+              <label htmlFor={field}>
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
               <input
+                id={field}
                 name={field}
                 value={rawData[field]}
                 onChange={handleInputChange}
@@ -93,8 +95,9 @@ const ResumeEditor = () => {
           <h3 className={styles.sectionTitle}>Professional Information</h3>
 
           <div className={styles.inputGroup}>
-            <label>Work Experience</label>
+            <label htmlFor="experience">Work Experience</label>
             <textarea
+              id="experience"
               name="experience"
               value={rawData.experience}
               onChange={handleInputChange}
@@ -108,29 +111,40 @@ const ResumeEditor = () => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Education</label>
+            <label htmlFor="education">Education</label>
             <textarea
+              id="education"
               name="education"
               value={rawData.education}
               onChange={handleInputChange}
               className={styles.textarea}
               rows={4}
+              placeholder="University Name, Degree, Year"
             />
           </div>
         </div>
 
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Additional Information</h3>
-
           {["projects", "skills", "languages"].map((field) => (
             <div className={styles.inputGroup} key={field}>
-              <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+              <label htmlFor={field}>
+                {field.charAt(0).toUpperCase() + field.slice(1)}
+              </label>
               <textarea
+                id={field}
                 name={field}
                 value={rawData[field]}
                 onChange={handleInputChange}
                 className={styles.textarea}
                 rows={field === "projects" ? 5 : 2}
+                placeholder={
+                  field === "skills"
+                    ? "JavaScript, React, Node.js"
+                    : field === "languages"
+                    ? "English (Fluent), Spanish (Basic)"
+                    : ""
+                }
               />
               {field === "skills" && (
                 <div className={styles.hint}>
@@ -150,5 +164,4 @@ const ResumeEditor = () => {
     </div>
   );
 };
-
 export default ResumeEditor;

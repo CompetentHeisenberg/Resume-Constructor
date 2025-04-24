@@ -29,7 +29,6 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {

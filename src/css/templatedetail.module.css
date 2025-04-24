@@ -1,27 +1,40 @@
+.templatePage .container {
+  background-color: #0f172a;
+  min-height: 100vh;
+}
+
+.templatePage {
+  background-color: #0f172a;
+  margin: 0;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  min-height: 100vh;
+  background-color: #0f172a;
 }
-
 .templateWrapper {
-  background: white;
+  background: #1e293b;
   border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  border: 1px solid #334155;
 }
 
 .previewSection {
   padding: 2rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #334155;
 }
 
 .previewContent {
-  background: #f8fafc;
+  background: white;
   padding: 2rem;
   border-radius: 0.5rem;
   border: 1px solid #e2e8f0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .demoHeader {
@@ -85,6 +98,7 @@
 .actionsSection {
   padding: 1.5rem 2rem;
   text-align: center;
+  background: #1e293b;
 }
 
 .useButton {
@@ -97,18 +111,18 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
   margin: 0;
 }
 
 .useButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
 }
 
 .loading {
   text-align: center;
   padding: 3rem;
   font-size: 1.2rem;
-  color: #64748b;
+  color: #94a3b8;
 }

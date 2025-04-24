@@ -10,8 +10,8 @@ export default function Footer() {
       </p>
       <div className={styles.legalLinks}>
         <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
+        <a href="#">Contact Center</a>
+        <a href="#">Guide for Resume</a>
       </div>
     </div>
   );
