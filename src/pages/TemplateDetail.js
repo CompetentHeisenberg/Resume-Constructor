@@ -7,28 +7,11 @@ const DEMO_DATA = {
   position: "Senior Frontend Developer",
   email: "olexandr@example.com",
   phone: "+380 99 765 4321",
-  experience: `
-    <div>
-      <p><strong>Senior Frontend Developer</strong></p>
-      <p>Tech Innovations | 2018-now</p>
-      <ul>
-        <li>Developing web-architecture on React</li>
-        <li>Team-Lead in developer team</li>
-      </ul>
-    </div>
-  `,
-  education: `
-    <div>
-      <p><strong>Master of CS</strong></p>
-      <p>Kyiv Politech Institute | 2012-2018</p>
-    </div>
-  `,
-  projects: `
-    <ul>
-      <li>Analytic System Manager (React/Node.js)</li>
-      <li>Web Banking Service (React Native)</li>
-    </ul>
-  `,
+  experience:
+    "Senior Frontend Developer (Tech Innovations | 2018-now), (Developing web-architecture on React) Team-Lead in developer team",
+  education: "Master of CS - Kyiv Politech Institute | 2012-2018",
+  projects:
+    "Analytic System Manager (React/Node.js), Web Banking Service (React Native)",
   skills: "JavaScript, React, TypeScript, Redux, GraphQL",
   languages: "Ukrainian (native), English (C1)",
 };

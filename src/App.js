@@ -7,6 +7,8 @@ import UsRes from "./pages/UserResumes";
 import Prof from "./pages/Profile";
 import Test from "./pages/ResumeEditor";
 import TemplateDetail from "./pages/TemplateDetail";
+import GuidePage from "./pages/GuidePage";
+
 function App() {
   return (
     <Router>
@@ -19,6 +21,7 @@ function App() {
         <Route path="/makets" element={<Mak></Mak>}></Route>
         <Route path="/editor" element={<Test></Test>}></Route>
         <Route path="/templates/:id" element={<TemplateDetail />} />
+        <Route path="/guide" element={<GuidePage />} />
       </Routes>
     </Router>
   );

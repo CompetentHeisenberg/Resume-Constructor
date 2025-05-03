@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "../css/footer.module.css";
 
 export default function Footer() {
@@ -11,7 +12,7 @@ export default function Footer() {
       <div className={styles.legalLinks}>
         <a href="#">Privacy Policy</a>
         <a href="#">Contact Center</a>
-        <a href="#">Guide for Resume</a>
+        <Link to="/guide">Guide for Resume</Link>
       </div>
     </div>
   );

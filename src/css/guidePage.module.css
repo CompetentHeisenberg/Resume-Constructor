@@ -1,0 +1,235 @@
+.guidePage {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.backgroundAnimation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(25, 118, 210, 0.1) 0%,
+    rgba(21, 101, 192, 0) 50%,
+    rgba(25, 118, 210, 0.1) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  z-index: 0;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  text-align: center;
+  background: linear-gradient(90deg, #4dabf5, #1976d2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.section {
+  background-color: rgba(30, 30, 30, 0.8);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.36);
+  transition: transform 0.3s ease;
+}
+
+.section:hover {
+  transform: translateY(-5px);
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  font-weight: 600;
+  position: relative;
+  display: inline-block;
+}
+
+.sectionTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #4dabf5, #1976d2);
+  border-radius: 3px;
+}
+
+.sectionDescription {
+  color: #b0b0b0;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.stepsList {
+  list-style-type: none;
+  padding-left: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.stepItem {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background: rgba(40, 40, 40, 0.6);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.stepItem:hover {
+  background: rgba(50, 50, 50, 0.8);
+  transform: translateX(5px);
+}
+
+.stepIcon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #4dabf5, #1976d2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.stepTitle {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.stepDescription {
+  color: #b0b0b0;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.tipsList {
+  list-style-type: none;
+  padding-left: 0;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.tipItem {
+  padding: 1.5rem;
+  background: rgba(40, 40, 40, 0.6);
+  border-radius: 10px;
+  border-left: 4px solid #1976d2;
+  transition: all 0.3s ease;
+}
+
+.tipItem:hover {
+  background: rgba(50, 50, 50, 0.8);
+}
+
+.tipTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.tipDescription {
+  color: #b0b0b0;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.startButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background: linear-gradient(135deg, #0d47a1, #1565c0);
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  margin: 3rem auto 0;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(13, 71, 161, 0.3);
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+  display: flex;
+}
+
+.startButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(13, 71, 161, 0.4);
+}
+
+.buttonArrow {
+  transition: transform 0.3s ease;
+}
+
+.startButton:hover .buttonArrow {
+  transform: translateX(3px);
+}
