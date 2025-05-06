@@ -1,10 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "../css/profile.module.css";
-import axios from "axios";
-import Quit from "../components/Quit";
-import { formatDate } from "../utils/profile/formatDate.js";
-import { ERRORS } from "../constants/profile/errorsProfile.js";
+import React from "react";
 import {
   FiEdit,
   FiSave,
@@ -17,126 +11,42 @@ import {
   FiClock,
   FiHome,
 } from "react-icons/fi";
+import { useProfile } from "../hooks/profile/useProfile";
+import styles from "../css/profile.module.css";
+import Quit from "../components/Quit";
+import { formatDate } from "../utils/profile/formatDate";
 
 const Profile = () => {
-  const [userData, setUserData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    position: "",
-    company: "",
-    updatedAt: "",
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/auth");
-          return;
-        }
-
-        const response = await axios.get("http://localhost:3001/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        });
-
-        setUserData({
-          fullName: response.data.fullName || "",
-          email: response.data.email || "",
-          phone: response.data.phone || "",
-          position: response.data.position || "",
-          company: response.data.company || "",
-          updatedAt: response.data.updatedAt || "",
-        });
-      } catch (err) {
-        console.error("Profile loading error:", err);
-        if (err.response?.status === 401) {
-          setError(ERRORS.SESSION_EXPIRED);
-          localStorage.removeItem("token");
-          navigate("/login");
-        } else {
-          setError(ERRORS.LOAD_FAILED);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [navigate]);
+  const {
+    userData,
+    setUserData,
+    loading,
+    error,
+    isEditing,
+    setIsEditing,
+    successMessage,
+    fetchProfile,
+    updateProfile,
+  } = useProfile();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleUpdateProfile = async (e) => {
+  const handleUpdateProfile = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccessMessage("");
-
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/auth");
-        return;
-      }
-
-      const response = await axios.put(
-        "http://localhost:3001/profile",
-        {
-          fullName: userData.fullName,
-          phone: userData.phone,
-          position: userData.position,
-          company: userData.company,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        }
-      );
-
-      setUserData(response.data);
-      setSuccessMessage("Profile successfully updated!");
-      setIsEditing(false);
-      setTimeout(() => setSuccessMessage(""), 3000);
-    } catch (err) {
-      console.error("Profile update error:", err);
-      if (err.response?.status === 401) {
-        setError(ERRORS.SESSION_EXPIRED);
-        localStorage.removeItem("token");
-        navigate("/login");
-      } else {
-        setError(err.response?.data?.message || ERRORS.UPDATE_FAILED);
-      }
-    }
+    updateProfile({
+      fullName: userData.fullName,
+      phone: userData.phone,
+      position: userData.position,
+      company: userData.company,
+    });
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setLoading(true);
-    setError("");
-    const token = localStorage.getItem("token");
-    axios
-      .get("http://localhost:3001/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      })
-      .then((response) => {
-        setUserData(response.data);
-      })
-      .catch((err) => {
-        console.error("Error reloading profile:", err);
-        setError(ERRORS.LOAD_FAILED);
-      })
-      .finally(() => setLoading(false));
+    fetchProfile();
   };
 
   if (loading) {

@@ -1,66 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "../css/reg.module.css";
 import Input from "../components/InputReg";
 import Label from "../components/Label";
-import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/RegButton";
+import { Link } from "react-router-dom";
+import { useRegister } from "../hooks/registration/useRegister";
 
 function Registration() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
-    if (
-      formData.password.length > 7 &&
-      /[A-Z]/.test(formData.password) &&
-      /[a-z]/.test(formData.password) &&
-      /\d/.test(formData.password)
-    ) {
-      try {
-        const response = await fetch("http://localhost:3001/users/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fullName: formData.fullName.trim(),
-            email: formData.email.trim().toLowerCase(),
-            password: formData.password,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Registration failed");
-        }
-
-        // Сохраняємо токен и перенаправляємо
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/");
-      } catch (error) {
-        setError(error.message || "Registration error");
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setError("You must match password requirements");
-      setLoading(false);
-    }
-  };
+  const { formData, handleChange, handleSubmit, error, loading } =
+    useRegister();
 
   return (
     <div className={style.mainBackground}>
@@ -85,6 +33,7 @@ function Registration() {
             </Link>
           </div>
         </div>
+
         <div className={style.rightpanel}>
           <div className={style.welcome}>
             <Label style={style.welcomelabel} text="Welcome" />

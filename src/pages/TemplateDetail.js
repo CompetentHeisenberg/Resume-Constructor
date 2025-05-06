@@ -1,73 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../css/templatedetail.module.css";
-
-const DEMO_DATA = {
-  fullName: "Olexander Petrenko",
-  position: "Senior Frontend Developer",
-  email: "olexandr@example.com",
-  phone: "+380 99 765 4321",
-  experience:
-    "Senior Frontend Developer (Tech Innovations | 2018-now), (Developing web-architecture on React) Team-Lead in developer team",
-  education: "Master of CS - Kyiv Politech Institute | 2012-2018",
-  projects:
-    "Analytic System Manager (React/Node.js), Web Banking Service (React Native)",
-  skills: "JavaScript, React, TypeScript, Redux, GraphQL",
-  languages: "Ukrainian (native), English (C1)",
-};
+import DEMO_DATA from "../constants/templateDetail/demoData";
+import useTemplate from "../hooks/templateDetail/useTemplate";
+import renderDemoTemplate from "../utils/templateDetail/renderDemoContent.js";
 
 function TemplateDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [template, setTemplate] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`http://localhost:3001/templates/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Cannot download Template");
-        return res.json();
-      })
-      .then((data) => {
-        setTemplate(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setLoading(false);
-      });
-  }, [id]);
-
-  const renderDemoContent = (htmlContent) => {
-    if (!htmlContent) return "";
-    return htmlContent
-      .replace(/\{\{fullName\}\}/g, DEMO_DATA.fullName)
-      .replace(/\{\{position\}\}/g, DEMO_DATA.position)
-      .replace(/\{\{email\}\}/g, DEMO_DATA.email)
-      .replace(/\{\{phone\}\}/g, DEMO_DATA.phone)
-      .replace(/\{\{experience\}\}/g, DEMO_DATA.experience)
-      .replace(/\{\{education\}\}/g, DEMO_DATA.education)
-      .replace(/\{\{projects\}\}/g, DEMO_DATA.projects)
-      .replace(/\{\{skills\}\}/g, DEMO_DATA.skills)
-      .replace(/\{\{languages\}\}/g, DEMO_DATA.languages);
-  };
+  const { template, loading } = useTemplate(id);
 
   const handleUseTemplate = () => {
     navigate("/editor", {
       state: {
         selectedTemplate: {
           ...template,
-          defaultValues: {
-            fullName: DEMO_DATA.fullName,
-            email: DEMO_DATA.email,
-            phone: DEMO_DATA.phone,
-            position: DEMO_DATA.position,
-            experience: DEMO_DATA.experience,
-            education: DEMO_DATA.education,
-            projects: DEMO_DATA.projects,
-            skills: DEMO_DATA.skills,
-            languages: DEMO_DATA.languages,
-          },
+          defaultValues: { ...DEMO_DATA },
         },
       },
     });
@@ -79,6 +27,7 @@ function TemplateDetail() {
         <p>Loading Template...</p>
       </div>
     );
+
   if (!template)
     return (
       <div className={styles.loading}>
@@ -94,7 +43,7 @@ function TemplateDetail() {
             <div
               className={styles.previewContent}
               dangerouslySetInnerHTML={{
-                __html: renderDemoContent(template.htmlContent),
+                __html: renderDemoTemplate(template.htmlContent, DEMO_DATA),
               }}
             />
           </div>

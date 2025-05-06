@@ -9,6 +9,7 @@ function Makets() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStyle, setSelectedStyle] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedFormat, setSelectedFormat] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3001/templates")
@@ -32,7 +33,10 @@ function Makets() {
       .includes(searchTerm.toLowerCase());
     const styleMatch = selectedStyle ? template.style === selectedStyle : true;
     const colorMatch = selectedColor ? template.color === selectedColor : true;
-    return nameMatch && styleMatch && colorMatch;
+    const formatMatch = selectedFormat
+      ? template.format === selectedFormat
+      : true;
+    return nameMatch && styleMatch && colorMatch && formatMatch;
   });
 
   if (loading) {
@@ -87,6 +91,14 @@ function Makets() {
             <option value="blue">Blue</option>
             <option value="green">Green</option>
             <option value="orange">Orange</option>
+          </select>
+          <select
+            value={selectedFormat}
+            onChange={(e) => setSelectedFormat(e.target.value)}
+          >
+            <option value="">All Formats</option>
+            <option value="vertical">Vertical</option>
+            <option value="horizontal">Horizontal</option>
           </select>
         </div>
       </header>

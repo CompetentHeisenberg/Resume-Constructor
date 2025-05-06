@@ -1,51 +1,21 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "../css/auth.module.css";
 import { Link } from "react-router-dom";
+import styles from "../css/auth.module.css";
 import Label from "../components/Label";
+import useLogin from "../hooks/auth/useLogin";
 
 function Authentification() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { login, loading, error } = useLogin();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:3001/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          email: formData.email.trim().toLowerCase(),
-          password: formData.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Authentication failed");
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/", { replace: true });
-    } catch (error) {
-      console.error("Login error:", error);
-      setError(error.message || "Invalid email or password");
-    } finally {
-      setLoading(false);
-    }
+    login(formData);
   };
 
   return (
@@ -56,7 +26,7 @@ function Authentification() {
 
           {error && (
             <div className={styles.error}>
-              <Label text={error}></Label>
+              <Label text={error} />
             </div>
           )}
 
