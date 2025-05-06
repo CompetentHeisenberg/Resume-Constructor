@@ -23,6 +23,7 @@ const Profile = () => {
     phone: "",
     position: "",
     company: "",
+    updatedAt: "",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -51,6 +52,7 @@ const Profile = () => {
           phone: response.data.phone || "",
           position: response.data.position || "",
           company: response.data.company || "",
+          updatedAt: response.data.updatedAt || "",
         });
       } catch (err) {
         console.error("Profile loading error:", err);
@@ -324,12 +326,25 @@ const Profile = () => {
                 <div className={styles.activityItem}>
                   <Quit style={styles.quit} />
                 </div>
-                <div className={styles.activityItem}>
-                  <div className={styles.activityDate}>One week ago</div>
-                  <div className={styles.activityText}>
-                    You successfully enter the system
+                {userData.updatedAt && (
+                  <div className={styles.activityItem}>
+                    <div className={styles.activityDate}>
+                      {new Date(userData.updatedAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}
+                    </div>
+                    <div className={styles.activityText}>
+                      You updated your profile information
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

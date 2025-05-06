@@ -1,5 +1,5 @@
 .guidePage {
-  background-color: #0a0a0a;
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
   color: #ffffff;
   min-height: 100vh;
   padding: 2rem 0;
@@ -49,7 +49,7 @@
   font-weight: 700;
   margin-bottom: 3rem;
   text-align: center;
-  background: linear-gradient(90deg, #4dabf5, #1976d2);
+  background: linear-gradient(90deg, #4dabf5, #a8c0d8);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

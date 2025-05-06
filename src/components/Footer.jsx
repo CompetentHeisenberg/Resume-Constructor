@@ -10,7 +10,7 @@ export default function Footer() {
         Reserved.
       </p>
       <div className={styles.legalLinks}>
-        <a href="#">Privacy Policy</a>
+        <Link to="https://github.com/CompetentHeisenberg">GitHub</Link>
         <a href="#">Contact Center</a>
         <Link to="/guide">Guide for Resume</Link>
       </div>

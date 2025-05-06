@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "../css/makets.module.css";
 
-// Демо-дані для відображення в прев'ю шаблонов
 const DEMO_DATA = {
   fullName: "Anna Kovalenko",
   position: "Frontend Developer",
@@ -39,6 +38,8 @@ function Makets() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStyle, setSelectedStyle] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3001/templates")
@@ -56,7 +57,6 @@ function Makets() {
       });
   }, []);
 
-  // Функція для заміни плейсхолдерів на демо-дані
   const renderDemoContent = (htmlContent) => {
     if (!htmlContent) return "";
 
@@ -72,9 +72,14 @@ function Makets() {
       .replace(/\{\{languages\}\}/g, DEMO_DATA.languages);
   };
 
-  const filteredTemplates = templates.filter((template) =>
-    template.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTemplates = templates.filter((template) => {
+    const nameMatch = template.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const styleMatch = selectedStyle ? template.style === selectedStyle : true;
+    const colorMatch = selectedColor ? template.color === selectedColor : true;
+    return nameMatch && styleMatch && colorMatch;
+  });
 
   if (loading) {
     return (
@@ -107,6 +112,28 @@ function Makets() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+        </div>
+
+        <div className={styles.filters}>
+          <select
+            value={selectedStyle}
+            onChange={(e) => setSelectedStyle(e.target.value)}
+          >
+            <option value="">All Styles</option>
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="modern">Modern</option>
+          </select>
+          <select
+            value={selectedColor}
+            onChange={(e) => setSelectedColor(e.target.value)}
+          >
+            <option value="">All Colors</option>
+            <option value="purple">Purple</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="orange">Orange</option>
+          </select>
         </div>
       </header>
 
