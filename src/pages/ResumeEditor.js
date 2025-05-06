@@ -1,67 +1,30 @@
-import React, { useState, useEffect } from "react";
-import ResumePreview from "./ResumePreview";
+import React from "react";
 import { useLocation } from "react-router-dom";
+import ResumePreview from "./ResumePreview";
 import styles from "../css/resumeEditor.module.css";
+import { convertTextToHtml } from "../utils/resumeEditor/formatters.js";
+import { useResumeData } from "../hooks/resumeEditor/useResumeData";
+import { mainFields, additionalFields } from "../constants/resumeEditor/fields";
+
+const initialData = {
+  fullName: "",
+  email: "",
+  phone: "",
+  position: "",
+  experience: "",
+  education: "",
+  projects: "",
+  languages: "",
+  skills: "",
+};
 
 const ResumeEditor = () => {
   const { state } = useLocation();
-  const initialData = {
-    fullName: "",
-    email: "",
-    phone: "",
-    position: "",
-    experience: "",
-    education: "",
-    projects: "",
-    languages: "",
-    skills: "",
-  };
-
-  const [rawData, setRawData] = useState(initialData);
-
-  const convertTextToHtml = (text) => {
-    if (!text) return "";
-    return text
-      .replace(/\n/g, "<br>")
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>");
-  };
-
-  const convertHtmlToText = (html) => {
-    if (!html) return "";
-    const temp = document.createElement("div");
-    temp.innerHTML = html;
-    return temp.textContent || temp.innerText || "";
-  };
-
-  useEffect(() => {
-    if (state?.selectedTemplate?.defaultValues) {
-      const templateData = state.selectedTemplate.defaultValues;
-      const plainTextData = {};
-
-      for (const key in templateData) {
-        plainTextData[key] = convertHtmlToText(templateData[key]);
-      }
-
-      setRawData(plainTextData);
-    }
-  }, [state]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setRawData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleDataImported = (importedData) => {
-    const plainTextData = {};
-    for (const key in importedData) {
-      plainTextData[key] = convertHtmlToText(importedData[key]);
-    }
-    setRawData(plainTextData);
-  };
+  const templateData = state?.selectedTemplate?.defaultValues;
+  const { rawData, handleInputChange, importData } = useResumeData(
+    initialData,
+    templateData
+  );
 
   const formData = {};
   for (const key in rawData) {
@@ -72,9 +35,10 @@ const ResumeEditor = () => {
     <div className={styles.container}>
       <div className={styles.form}>
         <h2 className={styles.title}>Edit Resume</h2>
+
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Main Information</h3>
-          {["fullName", "position", "email", "phone"].map((field) => (
+          {mainFields.map((field) => (
             <div className={styles.inputGroup} key={field}>
               <label htmlFor={field}>
                 {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -126,7 +90,7 @@ const ResumeEditor = () => {
 
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Additional Information</h3>
-          {["projects", "skills", "languages"].map((field) => (
+          {additionalFields.map((field) => (
             <div className={styles.inputGroup} key={field}>
               <label htmlFor={field}>
                 {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -159,9 +123,10 @@ const ResumeEditor = () => {
       <ResumePreview
         data={formData}
         template={state?.selectedTemplate || {}}
-        onDataImported={handleDataImported}
+        onDataImported={importData}
       />
     </div>
   );
 };
+
 export default ResumeEditor;

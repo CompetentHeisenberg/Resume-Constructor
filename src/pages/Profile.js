@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "../css/profile.module.css";
 import axios from "axios";
 import Quit from "../components/Quit";
+import { formatDate } from "../utils/profile/formatDate.js";
+import { ERRORS } from "../constants/profile/errorsProfile.js";
 import {
   FiEdit,
   FiSave,
@@ -30,6 +32,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -40,9 +43,7 @@ const Profile = () => {
         }
 
         const response = await axios.get("http://localhost:3001/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
 
@@ -57,11 +58,11 @@ const Profile = () => {
       } catch (err) {
         console.error("Profile loading error:", err);
         if (err.response?.status === 401) {
-          setError("Session is expired. Please login again");
+          setError(ERRORS.SESSION_EXPIRED);
           localStorage.removeItem("token");
           navigate("/login");
         } else {
-          setError("We can't dowloand your profile. Please try again later");
+          setError(ERRORS.LOAD_FAILED);
         }
       } finally {
         setLoading(false);
@@ -73,10 +74,7 @@ const Profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleUpdateProfile = async (e) => {
@@ -100,9 +98,7 @@ const Profile = () => {
           company: userData.company,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );
@@ -110,18 +106,15 @@ const Profile = () => {
       setUserData(response.data);
       setSuccessMessage("Profile successfully updated!");
       setIsEditing(false);
-
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       console.error("Profile update error:", err);
       if (err.response?.status === 401) {
-        setError("Session is expired. Please login again");
+        setError(ERRORS.SESSION_EXPIRED);
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        setError(
-          err.response?.data?.message || "Error: We can't update your profile"
-        );
+        setError(err.response?.data?.message || ERRORS.UPDATE_FAILED);
       }
     }
   };
@@ -133,9 +126,7 @@ const Profile = () => {
     const token = localStorage.getItem("token");
     axios
       .get("http://localhost:3001/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       })
       .then((response) => {
@@ -143,7 +134,7 @@ const Profile = () => {
       })
       .catch((err) => {
         console.error("Error reloading profile:", err);
-        setError("Error: We cant dowloand your data");
+        setError(ERRORS.LOAD_FAILED);
       })
       .finally(() => setLoading(false));
   };
@@ -329,16 +320,7 @@ const Profile = () => {
                 {userData.updatedAt && (
                   <div className={styles.activityItem}>
                     <div className={styles.activityDate}>
-                      {new Date(userData.updatedAt).toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
-                      )}
+                      {formatDate(userData.updatedAt)}
                     </div>
                     <div className={styles.activityText}>
                       You updated your profile information

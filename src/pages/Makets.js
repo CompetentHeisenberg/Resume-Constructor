@@ -1,38 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "../css/makets.module.css";
-
-const DEMO_DATA = {
-  fullName: "Anna Kovalenko",
-  position: "Frontend Developer",
-  email: "anna@example.com",
-  phone: "+380 99 123 4567",
-  experience: `
-    <div>
-      <p><strong>Senior Frontend Developer</strong></p>
-      <p>TechSolutions Inc. | 2020-now</p>
-      <ul>
-        <li>Developing SPA on React</li>
-        <li>Productivity Optimisation</li>
-      </ul>
-    </div>
-  `,
-  education: `
-    <div>
-      <p><strong>Computer Science</strong></p>
-      <p>Kyiv University | 2015-2019</p>
-    </div>
-  `,
-  projects: `
-    <ul>
-      <li>Web-Store (React/Node.js)</li>
-      <li>Corporate Portal (Vue.js)</li>
-    </ul>
-  `,
-  skills: "JavaScript, React, HTML/CSS, Git",
-  languages: "Ukrainian (native), English (B2)",
-};
-
+import { renderDemoContent } from "../utils/makets/renderDemoContent";
 function Makets() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,21 +25,6 @@ function Makets() {
         setLoading(false);
       });
   }, []);
-
-  const renderDemoContent = (htmlContent) => {
-    if (!htmlContent) return "";
-
-    return htmlContent
-      .replace(/\{\{fullName\}\}/g, DEMO_DATA.fullName)
-      .replace(/\{\{position\}\}/g, DEMO_DATA.position)
-      .replace(/\{\{email\}\}/g, DEMO_DATA.email)
-      .replace(/\{\{phone\}\}/g, DEMO_DATA.phone)
-      .replace(/\{\{experience\}\}/g, DEMO_DATA.experience)
-      .replace(/\{\{education\}\}/g, DEMO_DATA.education)
-      .replace(/\{\{projects\}\}/g, DEMO_DATA.projects)
-      .replace(/\{\{skills\}\}/g, DEMO_DATA.skills)
-      .replace(/\{\{languages\}\}/g, DEMO_DATA.languages);
-  };
 
   const filteredTemplates = templates.filter((template) => {
     const nameMatch = template.name

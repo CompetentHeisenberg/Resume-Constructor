@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import DOMPurify from "dompurify";
 import styles from "../css/resumePreview.module.css";
 import Button from "../components/RegButton";
-import useImportData from "../hooks/useImportData";
+import useImportData from "../hooks/resumePreview/useImportData";
+import useProcessedHtml from "../hooks/resumePreview/useProcessedHtml";
 
 const ResumePreview = ({ data = {}, template, onDataImported }) => {
   const resumeRef = useRef();
-  const [processedHtml, setProcessedHtml] = useState("");
   const userData = useImportData();
+  const processedHtml = useProcessedHtml(template, data);
 
   const handleImportData = () => {
     if (userData) {
@@ -27,78 +27,6 @@ const ResumePreview = ({ data = {}, template, onDataImported }) => {
       onDataImported?.(formattedData);
     }
   };
-
-  useEffect(() => {
-    const formatContent = (content, isList = false) => {
-      if (!content) return "";
-      if (isList && content.includes(",")) {
-        return `<ul>${content
-          .split(",")
-          .map((item) => `<li>${item.trim()}</li>`)
-          .join("")}</ul>`;
-      }
-      return content;
-    };
-
-    const processTemplate = (html) => {
-      const replacements = {
-        fullName: data.fullName,
-        position: data.position,
-        email: data.email,
-        phone: data.phone,
-        experience: formatContent(data.experience),
-        education: formatContent(data.education),
-        projects: formatContent(data.projects),
-        skills: formatContent(data.skills, true),
-        languages: formatContent(data.languages, true),
-      };
-
-      const defaultTemplate = `
-      <div style="font-family: 'Segoe UI', Tahoma, sans-serif; max-width: 800px; margin: 0 auto; padding: 30px; background: #fff; box-shadow: 0 0 20px rgba(0,0,0,0.1); border-radius: 12px;">
-        <h1>{{fullName}}</h1>
-        <h2>{{position}}</h2>
-        <p>Email: {{email}}</p>
-        <p>Phone: {{phone}}</p>
-        <section>
-          <h3>Experience</h3>
-          <div>{{experience}}</div>
-        </section>
-        <section>
-          <h3>Education</h3>
-          <div>{{education}}</div>
-        </section>
-        <section>
-          <h3>Projects</h3>
-          <div>{{projects}}</div>
-        </section>
-        <section>
-          <h3>Skills</h3>
-          <div>{{skills}}</div>
-        </section>
-        <section>
-          <h3>Languages</h3>
-          <div>{{languages}}</div>
-        </section>
-      </div>
-    `;
-
-      let result = html || defaultTemplate;
-
-      for (const [key, value] of Object.entries(replacements)) {
-        const placeholder = `{{${key}}}`;
-        const replacement =
-          !value || value.trim() === ""
-            ? `<span style="color:#999">[Your ${key}]</span>`
-            : value;
-
-        result = result.replace(new RegExp(placeholder, "g"), replacement);
-      }
-
-      return DOMPurify.sanitize(result);
-    };
-
-    setProcessedHtml(processTemplate(template?.htmlContent));
-  }, [data, template]);
 
   const downloadPDF = () => {
     const input = resumeRef.current;
