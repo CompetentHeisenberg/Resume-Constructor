@@ -6,29 +6,38 @@ export const useResumeData = (initialData, templateData) => {
 
   useEffect(() => {
     if (templateData) {
-      const plainTextData = {};
-      for (const key in templateData) {
-        plainTextData[key] = convertHtmlToText(templateData[key]);
-      }
-      setRawData(plainTextData);
+      setRawData((prev) => {
+        const updatedData = { ...prev };
+        for (const key in templateData) {
+          if (templateData[key]) {
+            updatedData[key] =
+              key === "avatar"
+                ? templateData[key]
+                : convertHtmlToText(templateData[key]);
+          }
+        }
+        return updatedData;
+      });
     }
   }, [templateData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setRawData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setRawData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const importData = (data) => {
-    const plainTextData = {};
-    for (const key in data) {
-      plainTextData[key] = convertHtmlToText(data[key]);
-    }
-    setRawData(plainTextData);
+  const importData = (newData) => {
+    setRawData((prev) => {
+      const updatedData = { ...prev };
+      for (const key in newData) {
+        if (newData[key]) {
+          updatedData[key] =
+            key === "avatar" ? newData[key] : convertHtmlToText(newData[key]);
+        }
+      }
+      return updatedData;
+    });
   };
 
-  return { rawData, setRawData, handleInputChange, importData };
+  return { rawData, handleInputChange, importData };
 };

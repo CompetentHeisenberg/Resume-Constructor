@@ -15,6 +15,7 @@ import { useProfile } from "../hooks/profile/useProfile";
 import styles from "../css/profile.module.css";
 import Quit from "../components/Quit";
 import { formatDate } from "../utils/profile/formatDate";
+import imageCompression from "browser-image-compression";
 
 const Profile = () => {
   const {
@@ -34,14 +35,52 @@ const Profile = () => {
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("File size should be less than 2MB");
+      return;
+    }
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 200,
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserData((prev) => ({
+          ...prev,
+          avatar: reader.result,
+          avatarFile: compressedFile,
+        }));
+      };
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("Error compressing image:", error);
+    }
+  };
+
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    updateProfile({
+    const formData = {
       fullName: userData.fullName,
       phone: userData.phone,
       position: userData.position,
       company: userData.company,
-    });
+    };
+
+    if (userData.avatarFile) {
+      formData.avatarFile = userData.avatarFile;
+    } else if (userData.avatar && typeof userData.avatar === "string") {
+      formData.avatarBase64 = userData.avatar;
+    }
+
+    updateProfile(formData);
   };
 
   const handleCancelEdit = () => {
@@ -77,11 +116,26 @@ const Profile = () => {
       <div className={styles.profileContainer}>
         <div className={styles.profileHeader}>
           <div className={styles.avatarContainer}>
-            <div className={styles.avatar}>
-              {userData.fullName
-                ? userData.fullName.charAt(0).toUpperCase()
-                : "U"}
-            </div>
+            {userData.avatar ? (
+              <img
+                src={userData.avatar}
+                alt="Avatar"
+                className={styles.avatarImage}
+              />
+            ) : (
+              <div className={styles.avatar}>
+                {userData.fullName
+                  ? userData.fullName.charAt(0).toUpperCase()
+                  : "U"}
+              </div>
+            )}
+            {isEditing && (
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+            )}
           </div>
 
           <div className={styles.headerContent}>

@@ -6,6 +6,7 @@ const useProcessedHtml = (template, data) => {
   const [processedHtml, setProcessedHtml] = useState("");
 
   useEffect(() => {
+    console.log("Template data:", { template, data });
     const result = processTemplate(
       template?.htmlContent,
       data,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,12 @@ function useImportData() {
     email: "",
     phone: "",
     position: "",
+    experience: "",
+    education: "",
+    projects: "",
+    skills: "",
+    languages: "",
+    avatar: "",
     company: "",
   });
 
@@ -34,6 +40,12 @@ function useImportData() {
           phone: response.data.phone || "",
           position: response.data.position || "",
           company: response.data.company || "",
+          experience: response.data.experience || "",
+          education: response.data.education || "",
+          projects: response.data.projects || "",
+          skills: response.data.skills || "",
+          languages: response.data.languages || "",
+          avatar: response.data.avatar || "",
         });
       } catch (error) {
         console.error("Failed to load profile:", error);

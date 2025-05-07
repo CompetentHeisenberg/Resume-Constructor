@@ -13,18 +13,19 @@ const ResumePreview = ({ data = {}, template, onDataImported }) => {
 
   const handleImportData = () => {
     if (userData) {
-      const formattedData = {
-        fullName: userData.fullName || data.fullName,
-        position: userData.position || data.position,
-        email: userData.email || data.email,
-        phone: userData.phone || data.phone,
-        experience: userData.experience || data.experience,
-        education: userData.education || data.education,
-        projects: userData.projects || data.projects,
-        skills: userData.skills || data.skills,
-        languages: userData.languages || data.languages,
-      };
-      onDataImported?.(formattedData);
+      const formattedData = {};
+      if (userData.fullName) formattedData.fullName = userData.fullName;
+      if (userData.position) formattedData.position = userData.position;
+      if (userData.email) formattedData.email = userData.email;
+      if (userData.phone) formattedData.phone = userData.phone;
+      if (userData.experience) formattedData.experience = userData.experience;
+      if (userData.education) formattedData.education = userData.education;
+      if (userData.projects) formattedData.projects = userData.projects;
+      if (userData.skills) formattedData.skills = userData.skills;
+      if (userData.languages) formattedData.languages = userData.languages;
+      if (userData.avatar) formattedData.avatar = userData.avatar;
+
+      onDataImported(formattedData);
     }
   };
 

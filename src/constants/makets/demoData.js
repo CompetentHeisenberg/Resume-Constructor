@@ -27,6 +27,8 @@ const DEMO_DATA = {
   `,
   skills: "JavaScript, React, HTML/CSS, Git",
   languages: "Ukrainian (native), English (B2)",
+  avatar: "",
+  initials: "AK",
 };
 
 export default DEMO_DATA;

@@ -3,24 +3,29 @@ import { useState, useEffect } from "react";
 const useTemplate = (id) => {
   const [template, setTemplate] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/templates/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Cannot download Template");
-        return res.json();
-      })
-      .then((data) => {
+    const fetchTemplate = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/templates/${id}`);
+        if (!response.ok) throw new Error("Template not found");
+        const data = await response.json();
+
+        if (!data.htmlContent) throw new Error("Invalid template format");
+
         setTemplate(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchTemplate();
   }, [id]);
 
-  return { template, loading };
+  return { template, loading, error };
 };
 
 export default useTemplate;

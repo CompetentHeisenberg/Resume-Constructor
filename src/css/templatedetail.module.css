@@ -126,3 +126,22 @@
   font-size: 1.2rem;
   color: #94a3b8;
 }
+.avatar-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.initials {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #3f51b5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}

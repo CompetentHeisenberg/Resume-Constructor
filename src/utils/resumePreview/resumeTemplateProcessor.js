@@ -12,6 +12,12 @@ export const formatContent = (content, isList = false) => {
 };
 
 export const processTemplate = (templateHtml, data, defaultTemplate) => {
+  const initials =
+    data.fullName
+      ?.split(" ")
+      .map((name) => name[0])
+      .join("") || "";
+
   const replacements = {
     fullName: data.fullName,
     position: data.position,
@@ -22,9 +28,19 @@ export const processTemplate = (templateHtml, data, defaultTemplate) => {
     projects: formatContent(data.projects),
     skills: formatContent(data.skills, true),
     languages: formatContent(data.languages, true),
+    avatar: data.avatar || "",
+    initials: initials,
   };
 
   let result = templateHtml || defaultTemplate;
+
+  if (data.avatar) {
+    result = result.replace(/\{\{#avatar\}\}(.*?)\{\{\/avatar\}\}/gs, "$1");
+    result = result.replace(/\{\{\^avatar\}\}(.*?)\{\{\/avatar\}\}/gs, "");
+  } else {
+    result = result.replace(/\{\{#avatar\}\}(.*?)\{\{\/avatar\}\}/gs, "");
+    result = result.replace(/\{\{\^avatar\}\}(.*?)\{\{\/avatar\}\}/gs, "$1");
+  }
 
   for (const [key, value] of Object.entries(replacements)) {
     const placeholder = `{{${key}}}`;

@@ -3,6 +3,11 @@ import axios from "axios";
 import { ERRORS } from "../../constants/profile/errorsProfile";
 import { useNavigate } from "react-router-dom";
 
+const api = axios.create({
+  baseURL: "http://localhost:3001",
+  withCredentials: true,
+});
+
 export const useProfile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,9 +24,8 @@ export const useProfile = () => {
         return;
       }
 
-      const response = await axios.get("http://localhost:3001/profile", {
+      const response = await api.get("/profile", {
         headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
       });
 
       setUserData(response.data);
@@ -51,14 +55,36 @@ export const useProfile = () => {
         return;
       }
 
-      const response = await axios.put(
-        "http://localhost:3001/profile",
-        updatedFields,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        }
-      );
+      setLoading(true);
+      setError("");
+      setSuccessMessage("");
+
+      const formData = new FormData();
+
+      if (updatedFields.fullName)
+        formData.append("fullName", updatedFields.fullName);
+      if (updatedFields.phone) formData.append("phone", updatedFields.phone);
+      if (updatedFields.position)
+        formData.append("position", updatedFields.position);
+      if (updatedFields.company)
+        formData.append("company", updatedFields.company);
+
+      if (updatedFields.avatarFile) {
+        formData.append("avatar", updatedFields.avatarFile);
+      } else if (updatedFields.avatar === "") {
+        formData.append("removeAvatar", "true");
+      }
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await api.put("/profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setUserData(response.data);
       setSuccessMessage("Profile successfully updated!");
@@ -71,8 +97,10 @@ export const useProfile = () => {
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        setError(err.response?.data?.message || ERRORS.UPDATE_FAILED);
+        setError(err.response?.data?.error || ERRORS.UPDATE_FAILED);
       }
+    } finally {
+      setLoading(false);
     }
   };
 

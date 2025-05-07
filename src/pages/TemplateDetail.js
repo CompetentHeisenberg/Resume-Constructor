@@ -8,32 +8,37 @@ import renderDemoTemplate from "../utils/templateDetail/renderDemoContent.js";
 function TemplateDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { template, loading } = useTemplate(id);
+  const { template, loading, error } = useTemplate(id);
+
+  const enhancedDemoData = {
+    ...DEMO_DATA,
+    initials:
+      DEMO_DATA.initials ||
+      (DEMO_DATA.fullName
+        ? DEMO_DATA.fullName
+            .split(" ")
+            .map((n) => n[0].toUpperCase())
+            .join("")
+            .substring(0, 2)
+        : ""),
+    avatar: DEMO_DATA.avatar ? DEMO_DATA.avatar : null,
+  };
 
   const handleUseTemplate = () => {
     navigate("/editor", {
       state: {
         selectedTemplate: {
           ...template,
-          defaultValues: { ...DEMO_DATA },
+          defaultValues: enhancedDemoData,
         },
       },
     });
   };
 
-  if (loading)
-    return (
-      <div className={styles.loading}>
-        <p>Loading Template...</p>
-      </div>
-    );
-
+  if (loading) return <div className={styles.loading}>Loading Template...</div>;
+  if (error) return <div className={styles.loading}>Error: {error}</div>;
   if (!template)
-    return (
-      <div className={styles.loading}>
-        <p>Cannot load Template</p>
-      </div>
-    );
+    return <div className={styles.loading}>Template not found</div>;
 
   return (
     <div className={styles.templatePage}>
@@ -43,7 +48,10 @@ function TemplateDetail() {
             <div
               className={styles.previewContent}
               dangerouslySetInnerHTML={{
-                __html: renderDemoTemplate(template.htmlContent, DEMO_DATA),
+                __html: renderDemoTemplate(
+                  template.htmlContent,
+                  enhancedDemoData
+                ),
               }}
             />
           </div>

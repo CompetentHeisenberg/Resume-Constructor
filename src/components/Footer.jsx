@@ -11,7 +11,7 @@ export default function Footer() {
       </p>
       <div className={styles.legalLinks}>
         <Link to="https://github.com/CompetentHeisenberg">GitHub</Link>
-        <a href="#">Contact Center</a>
+        <a href="/guide">Contact Center</a>
         <Link to="/guide">Guide for Resume</Link>
       </div>
     </div>

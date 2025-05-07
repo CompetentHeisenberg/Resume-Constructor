@@ -18,6 +18,20 @@ const UserSchema = new mongoose.Schema(
       select: false,
       minlength: [6, "Password must be at least 6 characters"],
     },
+    avatar: {
+      type: String,
+      default: "",
+      validate: {
+        validator: function (v) {
+          return (
+            v === "" ||
+            v.startsWith("data:image") ||
+            /^data:image\/(jpeg|png|gif|jpg);base64,/.test(v)
+          );
+        },
+        message: (props) => `Invalid avatar format!`,
+      },
+    },
     fullName: {
       type: String,
       trim: true,
@@ -96,6 +110,7 @@ UserSchema.methods.getProfile = function () {
     company: this.company,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
+    avatar: this.avatar,
   };
 };
 

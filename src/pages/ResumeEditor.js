@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import ResumePreview from "./ResumePreview";
 import styles from "../css/resumeEditor.module.css";
@@ -16,25 +16,91 @@ const initialData = {
   projects: "",
   languages: "",
   skills: "",
+  avatar: "",
 };
 
 const ResumeEditor = () => {
   const { state } = useLocation();
   const templateData = state?.selectedTemplate?.defaultValues;
+  const fileInputRef = useRef(null);
   const { rawData, handleInputChange, importData } = useResumeData(
     initialData,
     templateData
   );
 
-  const formData = {};
+  const formData = {
+    ...rawData,
+    initials:
+      rawData.initials ||
+      (rawData.fullName
+        ? rawData.fullName
+            .split(" ")
+            .map((n) => n[0].toUpperCase())
+            .join("")
+            .substring(0, 2)
+        : ""),
+  };
+
   for (const key in rawData) {
-    formData[key] = convertTextToHtml(rawData[key]);
+    if (key !== "avatar") {
+      formData[key] = convertTextToHtml(rawData[key]);
+    }
   }
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        handleInputChange({
+          target: {
+            name: "avatar",
+            value: event.target.result,
+          },
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.form}>
         <h2 className={styles.title}>Edit Resume</h2>
+
+        <div className={styles.formSection}>
+          <h3 className={styles.sectionTitle}>Profile Photo</h3>
+          <div className={styles.inputGroup}>
+            <label className={styles.avatarUploadLabel}>
+              <span className={styles.avatarUploadText}>
+                {rawData.avatar ? "Change avatar" : "Upload avatar"}
+              </span>
+              <input
+                type="file"
+                id="avatar"
+                ref={fileInputRef}
+                onChange={handleAvatarChange}
+                accept="image/*"
+                className={styles.avatarInput}
+              />
+            </label>
+
+            <div className={styles.avatarPreviewContainer}>
+              {rawData.avatar ? (
+                <img
+                  src={rawData.avatar}
+                  className={styles.avatarPreview}
+                  alt=""
+                />
+              ) : (
+                <div className={styles.containerBase}>
+                  <div>👤</div>
+                  <div>No photo selected</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Main Information</h3>
@@ -122,7 +188,13 @@ const ResumeEditor = () => {
 
       <ResumePreview
         data={formData}
-        template={state?.selectedTemplate || {}}
+        template={{
+          ...state?.selectedTemplate,
+          defaultValues: {
+            ...state?.selectedTemplate?.defaultValues,
+            avatar: rawData.avatar,
+          },
+        }}
         onDataImported={importData}
       />
     </div>

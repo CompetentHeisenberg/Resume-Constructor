@@ -10,5 +10,6 @@ const DEMO_DATA = {
     "Analytic System Manager (React/Node.js), Web Banking Service (React Native)",
   skills: "JavaScript, React, TypeScript, Redux, GraphQL",
   languages: "Ukrainian (native), English (C1)",
+  avatar: "",
 };
 export default DEMO_DATA;
