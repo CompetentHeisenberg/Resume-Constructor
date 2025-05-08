@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import styles from "../css/resumePreview.module.css";
@@ -9,22 +9,44 @@ import useProcessedHtml from "../hooks/resumePreview/useProcessedHtml";
 const ResumePreview = ({ data = {}, template, onDataImported }) => {
   const resumeRef = useRef();
   const userData = useImportData();
-  const processedHtml = useProcessedHtml(template, data);
+  const [localData, setLocalData] = useState(data);
+
+  useEffect(() => {
+    setLocalData(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (localData.fullName && !localData.initials) {
+      const initials =
+        localData.fullName
+          ?.split(" ")
+          .map((name) => name[0])
+          .join("") || "";
+      setLocalData((prevData) => ({
+        ...prevData,
+        initials,
+      }));
+    }
+  }, [localData.fullName]);
+
+  const processedHtml = useProcessedHtml(template, localData);
 
   const handleImportData = () => {
     if (userData) {
-      const formattedData = {};
-      if (userData.fullName) formattedData.fullName = userData.fullName;
-      if (userData.position) formattedData.position = userData.position;
-      if (userData.email) formattedData.email = userData.email;
-      if (userData.phone) formattedData.phone = userData.phone;
-      if (userData.experience) formattedData.experience = userData.experience;
-      if (userData.education) formattedData.education = userData.education;
-      if (userData.projects) formattedData.projects = userData.projects;
-      if (userData.skills) formattedData.skills = userData.skills;
-      if (userData.languages) formattedData.languages = userData.languages;
-      if (userData.avatar) formattedData.avatar = userData.avatar;
+      const formattedData = {
+        fullName: userData.fullName,
+        position: userData.position,
+        email: userData.email,
+        phone: userData.phone,
+        experience: userData.experience,
+        education: userData.education,
+        projects: userData.projects,
+        skills: userData.skills,
+        languages: userData.languages,
+        avatar: userData.avatar,
+      };
 
+      setLocalData(formattedData);
       onDataImported(formattedData);
     }
   };

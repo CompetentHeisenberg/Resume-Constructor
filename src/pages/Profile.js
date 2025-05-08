@@ -78,6 +78,8 @@ const Profile = () => {
       formData.avatarFile = userData.avatarFile;
     } else if (userData.avatar && typeof userData.avatar === "string") {
       formData.avatarBase64 = userData.avatar;
+    } else {
+      formData.removeAvatar = true;
     }
 
     updateProfile(formData);
@@ -87,6 +89,14 @@ const Profile = () => {
     setIsEditing(false);
     fetchProfile();
   };
+
+  if (!userData) {
+    return (
+      <div className={styles.errorContainer}>
+        <p className={styles.errorText}>Please log in to view your profile.</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -130,11 +140,33 @@ const Profile = () => {
               </div>
             )}
             {isEditing && (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarChange}
-              />
+              <div className={styles.buttonsCont}>
+                <label className={styles.fileInputLabel}>
+                  Choose Avatar
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className={styles.hiddenFileInput}
+                  />
+                </label>
+
+                {userData.avatar && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setUserData((prev) => ({
+                        ...prev,
+                        avatar: null,
+                        avatarFile: null,
+                      }))
+                    }
+                    className={styles.deleteAvatarButton}
+                  >
+                    Delete Avatar
+                  </button>
+                )}
+              </div>
             )}
           </div>
 

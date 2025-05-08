@@ -71,7 +71,7 @@ export const useProfile = () => {
 
       if (updatedFields.avatarFile) {
         formData.append("avatar", updatedFields.avatarFile);
-      } else if (updatedFields.avatar === "") {
+      } else if (!updatedFields.avatarFile && !updatedFields.avatar) {
         formData.append("removeAvatar", "true");
       }
 

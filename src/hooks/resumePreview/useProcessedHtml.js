@@ -7,9 +7,13 @@ const useProcessedHtml = (template, data) => {
 
   useEffect(() => {
     console.log("Template data:", { template, data });
+    const updatedData = {
+      ...data,
+      initials: data.initials || "",
+    };
     const result = processTemplate(
       template?.htmlContent,
-      data,
+      updatedData,
       defaultResumeTemplate
     );
     setProcessedHtml(result);
