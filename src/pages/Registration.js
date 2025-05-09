@@ -2,7 +2,7 @@ import React from "react";
 import style from "../css/reg.module.css";
 import Input from "../components/InputReg";
 import Label from "../components/Label";
-import Button from "../components/RegButton";
+import RegButton from "../components/RegButton";
 import { Link } from "react-router-dom";
 import { useRegister } from "../hooks/registration/useRegister";
 
@@ -84,9 +84,9 @@ function Registration() {
                 <Label text={error} className={style.error} />
               </div>
             )}
-            <Button style={style.button} type="submit" disabled={loading}>
+            <RegButton style={style.button} type="submit" disabled={loading}>
               {loading ? "Processing..." : "Start Journey"}
-            </Button>
+            </RegButton>
           </form>
         </div>
       </div>

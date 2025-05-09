@@ -242,6 +242,9 @@
 }
 
 .filters select {
+  display: block;
+  text-align: center;
+  text-align-last: center;
   padding: 0.5rem 1rem;
   background-color: #1e293b;
   color: #e2e8f0;

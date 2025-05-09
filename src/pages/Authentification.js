@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../css/auth.module.css";
 import Label from "../components/Label";
+import InputReg from "../components/InputReg";
+import Button from "../components/Button";
 import useLogin from "../hooks/auth/useLogin";
 
 function Authentification() {
@@ -26,42 +28,42 @@ function Authentification() {
 
           {error && (
             <div className={styles.error}>
-              <Label text={error} />
+              <Label text={error} style={styles.errorLabel} />
             </div>
           )}
 
           <form className={styles.form} onSubmit={handleSubmit}>
-            <input
-              className={styles.input}
+            <InputReg
+              style={styles.input}
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Email"
+              help="Email"
               autoComplete="username"
               required
               disabled={loading}
             />
-            <input
-              className={styles.input}
+            <InputReg
+              style={styles.input}
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Password"
+              help="Password"
               autoComplete="current-password"
               required
               disabled={loading}
             />
             <div className={styles.but}>
-              <button
-                className={styles.button}
+              <Button
                 type="submit"
+                className={styles.button}
                 disabled={loading}
                 aria-busy={loading}
               >
                 {loading ? "Signing in..." : "Sign In"}
-              </button>
+              </Button>
             </div>
           </form>
 

@@ -71,7 +71,9 @@ export const useProfile = () => {
 
       if (updatedFields.avatarFile) {
         formData.append("avatar", updatedFields.avatarFile);
-      } else if (!updatedFields.avatarFile && !updatedFields.avatar) {
+      } else if (updatedFields.avatarBase64) {
+        formData.append("avatarBase64", updatedFields.avatarBase64);
+      } else if (updatedFields.removeAvatar) {
         formData.append("removeAvatar", "true");
       }
 

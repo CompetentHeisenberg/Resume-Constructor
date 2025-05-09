@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import styles from "../css/makets.module.css";
-import { renderDemoContent } from "../utils/makets/renderDemoContent";
+import SearchBar from "../components/Makets/SearchBar";
+import TemplateFilters from "../components/Makets/TemplateFilters";
+import TemplateCard from "../components/Makets/TemplateCard";
+
 function Makets() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,6 +12,7 @@ function Makets() {
   const [selectedStyle, setSelectedStyle] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedFormat, setSelectedFormat] = useState("");
+  const [hasAvatar, setHasAvatar] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3001/templates")
@@ -36,7 +39,15 @@ function Makets() {
     const formatMatch = selectedFormat
       ? template.format === selectedFormat
       : true;
-    return nameMatch && styleMatch && colorMatch && formatMatch;
+    const avatarMatch =
+      hasAvatar === "yes"
+        ? typeof template.defaultValues?.avatar === "string" &&
+          template.defaultValues.avatar.trim() === ""
+        : hasAvatar === "no"
+        ? !template.defaultValues?.hasOwnProperty("avatar")
+        : true;
+
+    return nameMatch && styleMatch && colorMatch && formatMatch && avatarMatch;
   });
 
   if (loading) {
@@ -62,78 +73,24 @@ function Makets() {
         <h1 className={styles.title}>Professional Templates</h1>
         <p className={styles.subtitle}>Choose ideal Template for yourself</p>
 
-        <div className={styles.searchContainer}>
-          <input
-            type="text"
-            placeholder="Searching Templates..."
-            className={styles.searchInput}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <SearchBar value={searchTerm} onChange={setSearchTerm} />
 
-        <div className={styles.filters}>
-          <select
-            value={selectedStyle}
-            onChange={(e) => setSelectedStyle(e.target.value)}
-          >
-            <option value="">All Styles</option>
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-            <option value="modern">Modern</option>
-          </select>
-          <select
-            value={selectedColor}
-            onChange={(e) => setSelectedColor(e.target.value)}
-          >
-            <option value="">All Colors</option>
-            <option value="purple">Purple</option>
-            <option value="blue">Blue</option>
-            <option value="green">Green</option>
-            <option value="orange">Orange</option>
-          </select>
-          <select
-            value={selectedFormat}
-            onChange={(e) => setSelectedFormat(e.target.value)}
-          >
-            <option value="">All Formats</option>
-            <option value="vertical">Vertical</option>
-            <option value="horizontal">Horizontal</option>
-          </select>
-        </div>
+        <TemplateFilters
+          selectedStyle={selectedStyle}
+          setSelectedStyle={setSelectedStyle}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          selectedFormat={selectedFormat}
+          setSelectedFormat={setSelectedFormat}
+          hasAvatar={hasAvatar}
+          setHasAvatar={setHasAvatar}
+        />
       </header>
 
       {filteredTemplates.length > 0 ? (
         <div className={styles.templatesGrid}>
           {filteredTemplates.map((template) => (
-            <div key={template._id} className={styles.templateCard}>
-              <div className={styles.previewContainer}>
-                <div
-                  className={styles.demoContent}
-                  dangerouslySetInnerHTML={{
-                    __html: renderDemoContent(template.htmlContent),
-                  }}
-                />
-              </div>
-              <div className={styles.cardContent}>
-                <h3 className={styles.templateName}>{template.name}</h3>
-                <div className={styles.actions}>
-                  <Link
-                    to={`/templates/${template._id}`}
-                    className={styles.detailLink}
-                  >
-                    Details
-                  </Link>
-                  <Link
-                    to="/editor"
-                    state={{ selectedTemplate: template }}
-                    className={styles.useButton}
-                  >
-                    Use this Template
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <TemplateCard key={template._id} template={template} />
           ))}
         </div>
       ) : (

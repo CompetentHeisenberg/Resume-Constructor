@@ -1,21 +1,20 @@
 import React from "react";
 import {
-  FiEdit,
-  FiSave,
-  FiX,
   FiUser,
   FiPhone,
   FiBriefcase,
   FiMail,
   FiAward,
-  FiClock,
   FiHome,
+  FiSave,
 } from "react-icons/fi";
 import { useProfile } from "../hooks/profile/useProfile";
-import styles from "../css/profile.module.css";
-import Quit from "../components/Quit";
-import { formatDate } from "../utils/profile/formatDate";
 import imageCompression from "browser-image-compression";
+import styles from "../css/profile.module.css";
+
+import ProfileHeaderWithAvatar from "../components/Profile/ProfileHeaderWithAvatar";
+import InfoField from "../components/Profile/InfoField";
+import ActivityLog from "../components/Profile/ActivityLog";
 
 const Profile = () => {
   const {
@@ -26,7 +25,6 @@ const Profile = () => {
     isEditing,
     setIsEditing,
     successMessage,
-    fetchProfile,
     updateProfile,
   } = useProfile();
 
@@ -43,6 +41,7 @@ const Profile = () => {
       alert("File size should be less than 2MB");
       return;
     }
+
     const options = {
       maxSizeMB: 0.2,
       maxWidthOrHeight: 200,
@@ -85,11 +84,6 @@ const Profile = () => {
     updateProfile(formData);
   };
 
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    fetchProfile();
-  };
-
   if (!userData) {
     return (
       <div className={styles.errorContainer}>
@@ -124,77 +118,13 @@ const Profile = () => {
   return (
     <div className={styles.main}>
       <div className={styles.profileContainer}>
-        <div className={styles.profileHeader}>
-          <div className={styles.avatarContainer}>
-            {userData.avatar ? (
-              <img
-                src={userData.avatar}
-                alt="Avatar"
-                className={styles.avatarImage}
-              />
-            ) : (
-              <div className={styles.avatar}>
-                {userData.fullName
-                  ? userData.fullName.charAt(0).toUpperCase()
-                  : "U"}
-              </div>
-            )}
-            {isEditing && (
-              <div className={styles.buttonsCont}>
-                <label className={styles.fileInputLabel}>
-                  Choose Avatar
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarChange}
-                    className={styles.hiddenFileInput}
-                  />
-                </label>
-
-                {userData.avatar && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setUserData((prev) => ({
-                        ...prev,
-                        avatar: null,
-                        avatarFile: null,
-                      }))
-                    }
-                    className={styles.deleteAvatarButton}
-                  >
-                    Delete Avatar
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className={styles.headerContent}>
-            <h1 className={styles.profileTitle}>
-              {userData.fullName || userData.email}
-            </h1>
-            <p className={styles.profileSubtitle}>{userData.position}</p>
-            {userData.company && (
-              <p className={styles.company}>
-                <FiHome className={styles.icon} /> {userData.company}
-              </p>
-            )}
-          </div>
-
-          {!isEditing ? (
-            <button
-              className={styles.editButton}
-              onClick={() => setIsEditing(true)}
-            >
-              <FiEdit className={styles.buttonIcon} /> Edit
-            </button>
-          ) : (
-            <button className={styles.cancelButton} onClick={handleCancelEdit}>
-              <FiX className={styles.buttonIcon} /> Cancel
-            </button>
-          )}
-        </div>
+        <ProfileHeaderWithAvatar
+          userData={userData}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          handleAvatarChange={handleAvatarChange}
+          setUserData={setUserData}
+        />
 
         {successMessage && (
           <div className={styles.successMessage}>{successMessage}</div>
@@ -215,46 +145,27 @@ const Profile = () => {
                   <div className={styles.infoValue}>{userData.email}</div>
                 </div>
 
-                <div className={styles.infoItem}>
-                  <label className={styles.infoLabel}>
-                    <FiUser className={styles.labelIcon} /> Full name
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="fullName"
-                      value={userData.fullName}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                      placeholder="Enter your full name"
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {userData.fullName || "Not specified"}
-                    </div>
-                  )}
-                </div>
+                <InfoField
+                  label="Full name"
+                  name="fullName"
+                  value={userData.fullName}
+                  icon={FiUser}
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your full name"
+                />
 
-                <div className={styles.infoItem}>
-                  <label className={styles.infoLabel}>
-                    <FiPhone className={styles.labelIcon} /> Phone
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={userData.phone}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                      placeholder="Enter your phone number"
-                      pattern="[+]{0,1}[0-9\s-]+"
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {userData.phone || "Not specified"}
-                    </div>
-                  )}
-                </div>
+                <InfoField
+                  label="Phone"
+                  name="phone"
+                  value={userData.phone}
+                  icon={FiPhone}
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your phone number"
+                  type="tel"
+                  pattern="[+]{0,1}[0-9\s-]+"
+                />
               </div>
             </div>
 
@@ -265,65 +176,28 @@ const Profile = () => {
                   information
                 </h2>
 
-                <div className={styles.infoItem}>
-                  <label className={styles.infoLabel}>
-                    <FiAward className={styles.labelIcon} /> Position
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="position"
-                      value={userData.position}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                      placeholder="Enter your company position"
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {userData.position || "Not specified"}
-                    </div>
-                  )}
-                </div>
+                <InfoField
+                  label="Position"
+                  name="position"
+                  value={userData.position}
+                  icon={FiAward}
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your company position"
+                />
 
-                <div className={styles.infoItem}>
-                  <label className={styles.infoLabel}>
-                    <FiHome className={styles.labelIcon} /> Company
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="company"
-                      value={userData.company}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                      placeholder="Enter a name of your company"
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {userData.company || "Not specified"}
-                    </div>
-                  )}
-                </div>
+                <InfoField
+                  label="Company"
+                  name="company"
+                  value={userData.company}
+                  icon={FiHome}
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter a name of your company"
+                />
               </div>
 
-              <div className={styles.profileCard}>
-                <h2 className={styles.sectionTitle}>
-                  <FiClock className={styles.sectionIcon} /> Activity
-                </h2>
-                <div className={styles.activityItem}>
-                  <Quit style={styles.quit} />
-                </div>
-                {userData.updatedAt && (
-                  <div className={styles.activityItem}>
-                    <div className={styles.activityDate}>
-                      {formatDate(userData.updatedAt)}
-                    </div>
-                    <div className={styles.activityText}>
-                      You updated your profile information
-                    </div>
-                  </div>
-                )}
-              </div>
+              <ActivityLog updatedAt={userData.updatedAt} />
             </div>
           </div>
 
