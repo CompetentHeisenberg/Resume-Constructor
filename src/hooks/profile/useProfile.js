@@ -68,6 +68,15 @@ export const useProfile = () => {
         formData.append("position", updatedFields.position);
       if (updatedFields.company)
         formData.append("company", updatedFields.company);
+      if (updatedFields.experience)
+        formData.append("experience", updatedFields.experience);
+      if (updatedFields.education)
+        formData.append("education", updatedFields.education);
+      if (updatedFields.projects)
+        formData.append("projects", updatedFields.projects);
+      if (updatedFields.skills) formData.append("skills", updatedFields.skills);
+      if (updatedFields.languages)
+        formData.append("languages", updatedFields.languages);
 
       if (updatedFields.avatarFile) {
         formData.append("avatar", updatedFields.avatarFile);

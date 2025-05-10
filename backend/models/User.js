@@ -56,6 +56,31 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    experience: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    education: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    projects: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    skills: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    languages: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     tokens: [
       {
         token: {
@@ -108,6 +133,11 @@ UserSchema.methods.getProfile = function () {
     phone: this.phone,
     position: this.position,
     company: this.company,
+    experience: this.experience,
+    education: this.education,
+    projects: this.projects,
+    skills: this.skills,
+    languages: this.languages,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     avatar: this.avatar,

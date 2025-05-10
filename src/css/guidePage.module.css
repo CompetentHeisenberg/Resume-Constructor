@@ -49,7 +49,7 @@
   font-weight: 700;
   margin-bottom: 3rem;
   text-align: center;
-  background: linear-gradient(90deg, #4dabf5, #a8c0d8);
+  background: linear-gradient(90deg, #84c3f3, #cbd3db);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -123,7 +123,7 @@
 .stepIcon {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, #4dabf5, #1976d2);
+  background: linear-gradient(135deg, #5a5a5a, #1b1b1b);
   color: white;
   border-radius: 50%;
   display: flex;

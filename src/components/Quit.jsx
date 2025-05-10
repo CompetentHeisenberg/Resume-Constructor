@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
-const LogoutButton = ({ style }) => {
+const LogoutButton = ({ className = "", type = "button" }) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     localStorage.removeItem("token");
     sessionStorage.removeItem("userData");
 
@@ -12,7 +13,7 @@ const LogoutButton = ({ style }) => {
   };
 
   return (
-    <button onClick={handleLogout} className={style}>
+    <button onClick={handleLogout} className={className} type={type}>
       Exit
     </button>
   );

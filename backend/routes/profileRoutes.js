@@ -42,6 +42,11 @@ router.put("/", auth, upload.single("avatar"), async (req, res) => {
     if (req.body.phone) user.phone = req.body.phone;
     if (req.body.position) user.position = req.body.position;
     if (req.body.company) user.company = req.body.company;
+    if (req.body.experience) user.experience = req.body.experience;
+    if (req.body.education) user.education = req.body.education;
+    if (req.body.projects) user.projects = req.body.projects;
+    if (req.body.skills) user.skills = req.body.skills;
+    if (req.body.languages) user.languages = req.body.languages;
 
     if (req.file) {
       user.avatar = `data:${
@@ -60,6 +65,11 @@ router.put("/", auth, upload.single("avatar"), async (req, res) => {
       phone: user.phone,
       position: user.position,
       company: user.company,
+      experience: user.experience,
+      education: user.education,
+      projects: user.projects,
+      skills: user.skills,
+      languages: user.languages,
       avatar: user.avatar,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

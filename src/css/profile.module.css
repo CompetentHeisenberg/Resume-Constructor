@@ -121,7 +121,6 @@
 
 .editButton,
 .cancelButton,
-.saveButton,
 .retryButton {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -152,16 +151,6 @@
 
 .cancelButton:hover {
   background: #333;
-}
-
-.saveButton {
-  background: #0d6d4d;
-  color: white;
-}
-
-.saveButton:hover {
-  background: #0f8862;
-  transform: translateY(-2px);
 }
 
 .retryButton {
@@ -262,6 +251,25 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
+.textAreaInput {
+  margin-bottom: 24px;
+  resize: none;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: #333;
+  color: #e0e0e0;
+}
+
+.textAreaInput:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
 .activityItem {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
@@ -337,27 +345,38 @@
 }
 
 .formActions {
+  height: 100%;
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
-  margin-top: 2rem;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .quit {
+  height: 100%;
+  width: 100%;
+  background: #680808;
+  color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
-  display: flex;
+  display: inline-block;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   transition: all 0.2s;
   border: none;
-  margin-left: 0;
-  background-color: rgb(94, 93, 93);
-  color: #ffffff;
+  box-sizing: border-box;
+  margin: 0;
+  text-align: left;
 }
+
 .quit:hover {
   background-color: rgb(167, 19, 19);
+  transform: translateY(-2px);
 }
 .avatarImage {
   width: 100px;
@@ -409,4 +428,35 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+.saveButton {
+  height: 1%;
+  width: 100%;
+  background: #0d6d4d;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.saveButton:hover {
+  background: #0f8862;
+  transform: translateY(-2px);
+}
+.ActionFlex {
+  gap: 5%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
 }

@@ -6,7 +6,6 @@ import {
   FiMail,
   FiAward,
   FiHome,
-  FiSave,
 } from "react-icons/fi";
 import { useProfile } from "../hooks/profile/useProfile";
 import imageCompression from "browser-image-compression";
@@ -15,7 +14,7 @@ import styles from "../css/profile.module.css";
 import ProfileHeaderWithAvatar from "../components/Profile/ProfileHeaderWithAvatar";
 import InfoField from "../components/Profile/InfoField";
 import ActivityLog from "../components/Profile/ActivityLog";
-
+import TextAreaField from "../components/Profile/TextAreaField";
 const Profile = () => {
   const {
     userData,
@@ -71,6 +70,11 @@ const Profile = () => {
       phone: userData.phone,
       position: userData.position,
       company: userData.company,
+      experience: userData.experience,
+      education: userData.education,
+      projects: userData.projects,
+      skills: userData.skills,
+      languages: userData.languages,
     };
 
     if (userData.avatarFile) {
@@ -167,6 +171,33 @@ const Profile = () => {
                   pattern="[+]{0,1}[0-9\s-]+"
                 />
               </div>
+
+              <div className={`${styles.profileCard} ${styles.primaryCard}`}>
+                <h2 className={styles.sectionTitle}>
+                  <FiUser className={styles.sectionIcon} /> Additional
+                  Information
+                </h2>
+
+                <InfoField
+                  label="Skills"
+                  name="skills"
+                  value={userData.skills}
+                  icon={FiUser}
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your skills"
+                />
+
+                <InfoField
+                  label="Languages"
+                  name="languages"
+                  value={userData.languages}
+                  icon={FiPhone}
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your languages"
+                />
+              </div>
             </div>
 
             <div className={styles.rightColumn}>
@@ -195,19 +226,43 @@ const Profile = () => {
                   onChange={handleInputChange}
                   placeholder="Enter a name of your company"
                 />
-              </div>
 
-              <ActivityLog updatedAt={userData.updatedAt} />
+                <TextAreaField
+                  icon={FiBriefcase}
+                  label="Work Experience"
+                  value={userData.experience}
+                  name="experience"
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your work experience"
+                />
+
+                <TextAreaField
+                  icon={FiBriefcase}
+                  label="Your Education"
+                  value={userData.education}
+                  name="education"
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your education"
+                />
+
+                <TextAreaField
+                  icon={FiBriefcase}
+                  label="Your Projects"
+                  value={userData.projects}
+                  name="projects"
+                  isEditing={isEditing}
+                  onChange={handleInputChange}
+                  placeholder="Enter your projects"
+                />
+              </div>
+              <ActivityLog
+                updatedAt={userData.updatedAt}
+                isEditing={isEditing}
+              />
             </div>
           </div>
-
-          {isEditing && (
-            <div className={styles.formActions}>
-              <button type="submit" className={styles.saveButton}>
-                <FiSave className={styles.buttonIcon} /> Save Changes
-              </button>
-            </div>
-          )}
         </form>
       </div>
     </div>
