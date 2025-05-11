@@ -31,6 +31,30 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.post("/change-password", auth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: "All Fields are important" });
+    }
+
+    const user = await User.findById(req.user.id).select("+password");
+    const isMatch = await user.comparePassword(currentPassword);
+
+    if (!isMatch) {
+      return res.status(400).json({ error: "You entered wrong password" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ message: "Password successfully changed" });
+  } catch (err) {
+    console.error("Error of changing password:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
 router.put("/", auth, upload.single("avatar"), async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

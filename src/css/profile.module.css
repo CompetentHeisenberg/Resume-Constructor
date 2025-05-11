@@ -460,3 +460,65 @@
   align-items: center;
   justify-items: center;
 }
+
+.infoPassword {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #252525;
+  border-radius: 12px;
+  border: 1px solid #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.infoPassword:hover {
+  border-color: #3b3b3b;
+}
+
+.passwordInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.passwordInputs input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: #1e1e1e;
+  border: 1px solid #3d3d3d;
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.passwordInputs input[type="password"]:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.passwordInputs input[type="password"]::placeholder {
+  color: #6b6b6b;
+  font-size: 0.9rem;
+}
+
+.passwordActions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+.inputFieldPas {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: #333;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}

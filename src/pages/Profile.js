@@ -15,6 +15,7 @@ import ProfileHeaderWithAvatar from "../components/Profile/ProfileHeaderWithAvat
 import InfoField from "../components/Profile/InfoField";
 import ActivityLog from "../components/Profile/ActivityLog";
 import TextAreaField from "../components/Profile/TextAreaField";
+import PasswordField from "../components/Profile/PasswordField";
 const Profile = () => {
   const {
     userData,
@@ -25,6 +26,7 @@ const Profile = () => {
     setIsEditing,
     successMessage,
     updateProfile,
+    changePassword,
   } = useProfile();
 
   const handleInputChange = (e) => {
@@ -166,9 +168,21 @@ const Profile = () => {
                   icon={FiPhone}
                   isEditing={isEditing}
                   onChange={handleInputChange}
-                  placeholder="Enter your phone number"
+                  placeholder="+380 XX XXX XX XX"
                   type="tel"
-                  pattern="[+]{0,1}[0-9\s-]+"
+                  pattern="^(\+?38)?(0\d{9})$"
+                />
+
+                <PasswordField
+                  isEditing={isEditing}
+                  onChangePassword={async (currentPassword, newPassword) => {
+                    const success = await changePassword(
+                      currentPassword,
+                      newPassword
+                    );
+                    if (!success) throw new Error("Failed to change password");
+                    return success;
+                  }}
                 />
               </div>
 

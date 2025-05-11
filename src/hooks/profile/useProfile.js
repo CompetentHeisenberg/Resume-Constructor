@@ -114,7 +114,29 @@ export const useProfile = () => {
       setLoading(false);
     }
   };
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      setLoading(true);
+      setError("");
 
+      const token = localStorage.getItem("token");
+      const response = await api.post(
+        "/profile/change-password",
+        { currentPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setSuccessMessage(
+        response.data.message || "Password sucessfully changed"
+      );
+      return true;
+    } catch (err) {
+      setError(err.response?.data?.error || "Error while changing password");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
   return {
     userData,
     setUserData,
@@ -125,5 +147,6 @@ export const useProfile = () => {
     successMessage,
     fetchProfile,
     updateProfile,
+    changePassword,
   };
 };
