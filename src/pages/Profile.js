@@ -168,7 +168,7 @@ const Profile = () => {
                   icon={FiPhone}
                   isEditing={isEditing}
                   onChange={handleInputChange}
-                  placeholder="+380 XX XXX XX XX"
+                  placeholder="+380XXXXXXXXX"
                   type="tel"
                   pattern="^(\+?38)?(0\d{9})$"
                 />

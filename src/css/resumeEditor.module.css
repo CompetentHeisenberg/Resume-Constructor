@@ -140,3 +140,83 @@
   width: 100%;
   gap: 5%;
 }
+.analysisButton {
+  height: 40%;
+  width: 70%;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.analysisButton:hover {
+  background-color: #0056b3;
+}
+
+.analysisPopup h3 {
+  margin-bottom: 0.5rem;
+}
+
+.analysisPopup ul {
+  padding-left: 1rem;
+}
+
+.closeButton {
+  margin-top: 1rem;
+  padding: 0.4rem 0.8rem;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.analysisPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.analysisResults {
+  margin: 15px 0;
+}
+
+.analysisItem {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+
+.analysisItemHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.analysisIcon {
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+.analysisMessage {
+  margin: 0;
+  font-size: 0.95em;
+}
+.analyzeFlex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

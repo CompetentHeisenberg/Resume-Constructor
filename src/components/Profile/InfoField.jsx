@@ -10,6 +10,7 @@ const InfoField = ({
   onChange,
   placeholder,
   type = "text",
+  pattern,
 }) => (
   <div className={styles.infoItem}>
     <label className={styles.infoLabel}>
@@ -23,6 +24,8 @@ const InfoField = ({
         onChange={onChange}
         className={styles.inputField}
         placeholder={placeholder}
+        pattern={pattern}
+        required
       />
     ) : (
       <div className={styles.infoValue}>{value || "Not specified"}</div>

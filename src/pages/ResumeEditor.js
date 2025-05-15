@@ -5,6 +5,9 @@ import styles from "../css/resumeEditor.module.css";
 import { convertTextToHtml } from "../utils/resumeEditor/formatters.js";
 import { useResumeData } from "../hooks/resumeEditor/useResumeData";
 import { mainFields, additionalFields } from "../constants/resumeEditor/fields";
+import ResumeAnalysisPopup from "../components/ResumeEditor/ResumeAnalysisPopup";
+import { useResumeAnalysis } from "../hooks/resumeEditor/useResumeAnalysis";
+import Button from "../components/Button.jsx";
 
 const initialData = {
   fullName: "",
@@ -27,6 +30,8 @@ const ResumeEditor = () => {
     initialData,
     templateData
   );
+  const { analyze, analysisResult, showAnalysis, setShowAnalysis } =
+    useResumeAnalysis(rawData);
 
   const formData = {
     ...rawData,
@@ -67,7 +72,11 @@ const ResumeEditor = () => {
     <div className={styles.container}>
       <div className={styles.form}>
         <h2 className={styles.title}>Edit Resume</h2>
-
+        <div className={styles.analyzeFlex}>
+          <Button onClick={analyze} className={styles.analysisButton}>
+            Analyze your Resume
+          </Button>
+        </div>
         <div className={styles.formSection}>
           <h3 className={styles.sectionTitle}>Profile Photo</h3>
           <div className={styles.inputGroup}>
@@ -197,6 +206,13 @@ const ResumeEditor = () => {
         }}
         onDataImported={importData}
       />
+
+      {showAnalysis && (
+        <ResumeAnalysisPopup
+          results={analysisResult}
+          onClose={() => setShowAnalysis(false)}
+        />
+      )}
     </div>
   );
 };
